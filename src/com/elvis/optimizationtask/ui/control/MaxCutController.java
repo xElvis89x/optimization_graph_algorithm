@@ -1,12 +1,12 @@
 package com.elvis.optimizationtask.ui.control;
 
 import com.elvis.graph.GraphVisualizator;
-import com.elvis.model.SimpleBooleanGraph;
+import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
-import com.elvis.optimizationtask.algorithm.maxcut.booleans.MaxCutBoolBrutForce;
-import com.elvis.optimizationtask.algorithm.maxcut.booleans.MaxCutBoolGeneticAlgorithm;
-import com.elvis.optimizationtask.algorithm.maxcut.booleans.MaxCutBoolLorena;
-import com.elvis.optimizationtask.algorithm.maxcut.booleans.MaxCutBoolRandom;
+import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightBrutForce;
+import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightGeneticAlgorithm;
+import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightLorena;
+import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightRandom;
 import com.elvis.optimizationtask.export.ExcelExporter;
 import com.elvis.optimizationtask.parser.ParserManager;
 import com.elvis.optimizationtask.ui.model.MaxCutTableModel;
@@ -30,7 +30,7 @@ import java.util.Random;
 public class MaxCutController {
     MaxCutView maxCutView;
     JFrame frame;
-    SimpleBooleanGraph graph;
+    SimpleWeightGraph graph;
     MaxCutTableModel tableModel;
     private File[] filesForCalc;
 
@@ -105,6 +105,7 @@ public class MaxCutController {
 
     File getFileForSaveXLS() {
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("."));
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Excel File", "xls"));
         fileChooser.showSaveDialog(frame);
@@ -133,10 +134,10 @@ public class MaxCutController {
 
     private void calculate() {
         MaxCut[] maxCutsAlgorithms = {
-                new MaxCutBoolBrutForce(graph),
-                new MaxCutBoolGeneticAlgorithm(graph),
-                new MaxCutBoolLorena(graph),
-                new MaxCutBoolRandom(graph)
+                new MaxCutWeightBrutForce(graph),
+                new MaxCutWeightGeneticAlgorithm(graph),
+                new MaxCutWeightLorena(graph),
+                new MaxCutWeightRandom(graph)
         };
         Color color = getRandomColor();
         int locStep = 0;
@@ -149,13 +150,13 @@ public class MaxCutController {
         }
     }
 
-    private SimpleBooleanGraph getGraph(File file) {
-        SimpleBooleanGraph result = null;
+    private SimpleWeightGraph getGraph(File file) {
+        SimpleWeightGraph result = null;
         if (file != null) {
             FileInputStream stream = null;
             try {
                 stream = new FileInputStream(file);
-                result = ParserManager.getGraphReader(stream).getGraphFromStream();
+                result = (SimpleWeightGraph) ParserManager.getGraphReader(stream).getGraphFromStream();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -170,11 +171,8 @@ public class MaxCutController {
 
     private File[] chooseFileWithGraph() {
         JFileChooser fileChooser = new JFileChooser();
-        //crutch
-        fileChooser.setCurrentDirectory(new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile()).getParentFile().getParentFile().getParentFile());
-
+        fileChooser.setCurrentDirectory(new File("."));
         fileChooser.setMultiSelectionEnabled(true);
-
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Graph file", "graph"));
         fileChooser.showOpenDialog(frame);

@@ -14,10 +14,11 @@ import java.util.Map;
  * eb - edge boolean graph presentation
  */
 public class ParserManager {
-    private static Map<String, Class<? extends AbstractGraphReader>> mapGraphReader = new HashMap<String, Class<? extends AbstractGraphReader>>() {
+    private static Map<String, AbstractGraphReader> mapGraphReader = new HashMap<String, AbstractGraphReader>() {
         {
-            put("mb", SimpleMatrixGraphReader.class);
-            put("eb", SimpleEdgeGraphReader.class);
+            put("mb", new SimpleBoolMatrixGraphReader());
+            put("eb", new SimpleBoolEdgeGraphReader());
+            put("mw", new SimpleWeightMatrixGraphReader());
         }
     };
 
@@ -26,6 +27,8 @@ public class ParserManager {
         byte[] typeByte = new byte[2];
         if (inputStream.read(typeByte) == -1)
             return null;
-        return mapGraphReader.get(new String(typeByte)).getConstructor(InputStream.class).newInstance(inputStream);
+        AbstractGraphReader reader = mapGraphReader.get(new String(typeByte));
+        reader.setInputStream(inputStream);
+        return reader;
     }
 }

@@ -1,7 +1,7 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
-import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
 import com.elvis.model.SimpleWeightGraph;
+import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
 
 /**
  * Created by User: el
@@ -14,7 +14,7 @@ public abstract class MaxCutWeightAbstract extends MaxCutAbstract {
     boolean[] res_mask;
 
 
-    protected MaxCutWeightAbstract(SimpleWeightGraph graph) {
+    public MaxCutWeightAbstract(SimpleWeightGraph graph) {
         this.graph = graph;
     }
 

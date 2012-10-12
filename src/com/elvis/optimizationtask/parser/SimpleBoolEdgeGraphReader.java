@@ -2,7 +2,6 @@ package com.elvis.optimizationtask.parser;
 
 import com.elvis.model.SimpleBooleanGraph;
 
-import java.io.InputStream;
 import java.util.Scanner;
 
 /**
@@ -25,10 +24,7 @@ import java.util.Scanner;
  * <tr><td>2</td><td>3</td></tr>
  * </table>
  */
-public class SimpleEdgeGraphReader extends AbstractGraphReader {
-    public SimpleEdgeGraphReader(InputStream inputStream) {
-        super(inputStream);
-    }
+public class SimpleBoolEdgeGraphReader extends AbstractGraphReader {
 
     @Override
     public SimpleBooleanGraph getGraphFromStream() {

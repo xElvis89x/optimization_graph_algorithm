@@ -1,7 +1,5 @@
 package com.elvis.optimizationtask.parser;
 
-import com.elvis.model.SimpleBooleanGraph;
-
 import java.io.InputStream;
 
 /**
@@ -10,14 +8,14 @@ import java.io.InputStream;
  * Time: 10:48
  * To change this template use File | Settings | File Templates.
  */
-public abstract class AbstractGraphReader {
+public abstract class AbstractGraphReader<T> {
 
 
     protected InputStream inputStream;
 
-    public AbstractGraphReader(InputStream inputStream) {
+    public void setInputStream(InputStream inputStream) {
         this.inputStream = inputStream;
     }
 
-    public abstract SimpleBooleanGraph getGraphFromStream();
+    public abstract T getGraphFromStream();
 }

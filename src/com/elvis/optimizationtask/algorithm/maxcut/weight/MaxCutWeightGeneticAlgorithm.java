@@ -15,7 +15,7 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
     Configuration gaConf = new DefaultConfiguration();
 
 
-    protected MaxCutWeightGeneticAlgorithm(SimpleWeightGraph graph) {
+    public MaxCutWeightGeneticAlgorithm(SimpleWeightGraph graph) {
         super(graph);
         Configuration.reset();
         gaConf.setPreservFittestIndividual(true);

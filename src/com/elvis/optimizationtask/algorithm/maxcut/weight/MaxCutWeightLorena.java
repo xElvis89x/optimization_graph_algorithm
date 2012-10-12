@@ -13,7 +13,7 @@ public class MaxCutWeightLorena extends MaxCutWeightAbstract {
     private static final double EPSILON = 0.0001;
     private static final double INFINITY = 100000000;
 
-    protected MaxCutWeightLorena(SimpleWeightGraph graph) {
+    public MaxCutWeightLorena(SimpleWeightGraph graph) {
         super(graph);
     }
 

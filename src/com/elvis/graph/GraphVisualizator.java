@@ -1,6 +1,6 @@
 package com.elvis.graph;
 
-import com.elvis.model.SimpleBooleanGraph;
+import com.elvis.model.SimpleWeightGraph;
 import traer.animation.Smoother3D;
 import traer.physics.Particle;
 import traer.physics.ParticleSystem;
@@ -20,12 +20,12 @@ import java.util.Random;
 public class GraphVisualizator {
 
     int NODE_SIZE = 7;
-    float EDGE_LENGTH = 100;
+    float EDGE_LENGTH = 5;
     float EDGE_STRENGTH = 0.2f;
 
-    SimpleBooleanGraph graph;
+    SimpleWeightGraph graph;
 
-    public GraphVisualizator(SimpleBooleanGraph graph) {
+    public GraphVisualizator(SimpleWeightGraph graph) {
         this.graph = graph;
     }
 
@@ -92,8 +92,8 @@ public class GraphVisualizator {
                     if (step < graph.getSize()) {
                         Particle a = physics.makeParticle(10, rand.nextInt(100) - 50, rand.nextInt(100) - 50, 0);
                         for (int i = 0; i < step; i++) {
-                            if (graph.getCell(i, step)) {
-                                physics.makeSpring(a, listParticle.get(i), EDGE_STRENGTH, EDGE_STRENGTH, EDGE_LENGTH);
+                            if (graph.getCell(i, step) != 0) {
+                                physics.makeSpring(a, listParticle.get(i), EDGE_STRENGTH, EDGE_STRENGTH, EDGE_LENGTH * graph.getCell(i, step));
                             }
                         }
                         listParticle.add(a);

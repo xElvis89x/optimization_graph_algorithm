@@ -29,7 +29,8 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         for (int j = 0; j < n_p; j++) {
             for (int k = 0; k < n_u; k++) {
 
-                p_u[j][k] = 1 / (1 + (1 - p_u[j][0]) / p_u[j][0] * Math.exp(u[k] - u[0])*(getCutValue(u)));
+//                p_u[j][k] = 1 / (1 + (1 - p_u[j][0]) / p_u[j][0]
+//                        * Math.exp(u[k] - u[0]) * (getCutValue(u) - getCutValue(u)));
             }
         }
     }

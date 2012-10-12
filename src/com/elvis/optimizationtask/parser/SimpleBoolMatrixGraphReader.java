@@ -2,7 +2,6 @@ package com.elvis.optimizationtask.parser;
 
 import com.elvis.model.SimpleBooleanGraph;
 
-import java.io.InputStream;
 import java.util.Scanner;
 
 /**
@@ -23,12 +22,7 @@ import java.util.Scanner;
  * <tr><td>0</td><td>1</td><td>1</td><td>1</td><td></td></tr>
  * </table>
  */
-public class SimpleMatrixGraphReader extends AbstractGraphReader {
-
-    public SimpleMatrixGraphReader(InputStream inputStream) {
-        super(inputStream);
-    }
-
+public class SimpleBoolMatrixGraphReader extends AbstractGraphReader<SimpleBooleanGraph> {
 
     public SimpleBooleanGraph getGraphFromStream() {
         SimpleBooleanGraph simpleBooleanGraph = new SimpleBooleanGraph();
