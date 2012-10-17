@@ -20,7 +20,7 @@ public class SimpleWeightMatrixGraphReader extends AbstractGraphReader<SimpleWei
         simpleWeightGraph.create(size);
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-
+                //bug with scanner.nextFloat, not understand number with point (example: 10.0)
                 simpleWeightGraph.setCell(i, j, Float.parseFloat(scanner.next()));
             }
         }

@@ -24,11 +24,11 @@ public class ExcelExporter {
         maxCuts = list;
     }
 
+    static final int countColumn = 2;
+
     public void writeData(OutputStream outputStream) {
         Workbook wb = new HSSFWorkbook();
         Sheet sheet = wb.createSheet();
-
-
         Row headerRow = sheet.createRow(0);
 
         Map<String, DataForWriting> mapID_Data = new HashMap<String, DataForWriting>();
@@ -39,7 +39,7 @@ public class ExcelExporter {
             DataForWriting dataForWriting = mapID_Data.get(maxCut.getID());
             if (dataForWriting == null) {
                 mapID_Data.put(maxCut.getID(), dataForWriting = new DataForWriting(algIndex++, 0));
-                headerRow.createCell(dataForWriting.algorithmIndex * 2 + 1).setCellValue(maxCut.getHumanID());
+                headerRow.createCell(dataForWriting.algorithmIndex * countColumn + 1).setCellValue(maxCut.getHumanID());
             }
             dataForWriting.lastRow++;
             Row row = r.get(dataForWriting.lastRow);
@@ -48,8 +48,8 @@ public class ExcelExporter {
                 row.createCell(0).setCellValue(maxCut.getMask().length);
 
             }
-            row.createCell(dataForWriting.algorithmIndex * 2 + 1).setCellValue(maxCut.getTimeExec());
-            row.createCell(dataForWriting.algorithmIndex * 2 + 2).setCellValue(maxCut.getMaxCut());
+            row.createCell(dataForWriting.algorithmIndex * countColumn + 1).setCellValue(maxCut.getTimeExec());
+            row.createCell(dataForWriting.algorithmIndex * countColumn + 2).setCellValue(maxCut.getMaxCut());
         }
         try {
             wb.write(outputStream);

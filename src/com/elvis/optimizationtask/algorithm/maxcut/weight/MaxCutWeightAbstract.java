@@ -10,7 +10,7 @@ import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
  */
 public abstract class MaxCutWeightAbstract extends MaxCutAbstract {
     SimpleWeightGraph graph;
-    long res_maxcut;
+    float res_maxcut;
     boolean[] res_mask;
 
 
@@ -20,7 +20,7 @@ public abstract class MaxCutWeightAbstract extends MaxCutAbstract {
 
 
     @Override
-    public long getMaxCut() {
+    public float getMaxCut() {
         return res_maxcut;
     }
 

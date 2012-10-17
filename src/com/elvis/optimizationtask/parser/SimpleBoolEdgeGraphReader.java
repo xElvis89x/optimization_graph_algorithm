@@ -31,7 +31,9 @@ public class SimpleBoolEdgeGraphReader extends AbstractGraphReader {
         SimpleBooleanGraph simpleBooleanGraph = new SimpleBooleanGraph();
         Scanner scanner = new Scanner(inputStream);
         int size = scanner.nextInt(); //read input edge count from stream
-        for (int i = 0; i < size; i++) {
+        simpleBooleanGraph.create(size);
+        int edgec = scanner.nextInt();
+        for (int i = 0; i < edgec; i++) {
             simpleBooleanGraph.setCell(scanner.nextInt() - 1, scanner.nextInt() - 1, true);
         }
         return simpleBooleanGraph;

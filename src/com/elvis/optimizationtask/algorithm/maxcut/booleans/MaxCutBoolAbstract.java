@@ -1,7 +1,7 @@
 package com.elvis.optimizationtask.algorithm.maxcut.booleans;
 
-import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
 import com.elvis.model.SimpleBooleanGraph;
+import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
 
 /**
  * Created by User: el
@@ -20,7 +20,7 @@ public abstract class MaxCutBoolAbstract extends MaxCutAbstract {
     }
 
     @Override
-    public long getMaxCut() {
+    public float getMaxCut() {
         return res_maxcut;
     }
 

@@ -14,16 +14,41 @@ public class MaxCutView {
     private JPanel contentPane;
     private JButton startCalcButton;
     private JProgressBar progressBar;
-    private JLabel fileNames;
     private JButton excelExport;
     private JButton visualizeGraphButton;
+    private JList fileList;
+    private JCheckBox brutForceCheckBox;
+    private JCheckBox geneticAlgorithmCheckBox;
+    private JCheckBox lorenaCheckBox;
+    private JCheckBox randomCheckBox;
+    private JCheckBox GESCheckBox;
+
+    public JCheckBox getBrutForceCheckBox() {
+        return brutForceCheckBox;
+    }
+
+    public JCheckBox getGeneticAlgorithmCheckBox() {
+        return geneticAlgorithmCheckBox;
+    }
+
+    public JCheckBox getLorenaCheckBox() {
+        return lorenaCheckBox;
+    }
+
+    public JCheckBox getRandomCheckBox() {
+        return randomCheckBox;
+    }
+
+    public JCheckBox getGESCheckBox() {
+        return GESCheckBox;
+    }
 
     public JButton getVisualizeGraphButton() {
         return visualizeGraphButton;
     }
 
-    public JLabel getFileNames() {
-        return fileNames;
+    public JList getFileList() {
+        return fileList;
     }
 
     public JProgressBar getProgressBar() {

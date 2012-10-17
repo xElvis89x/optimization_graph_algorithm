@@ -73,7 +73,15 @@ public class MaxCutTableModel extends DefaultTableModel {
                 break;
             case 1:
                 long nanosecond = maxCuts.get(row).getTimeExec();
-                result = "" + TimeUnit.SECONDS.convert(nanosecond, TimeUnit.NANOSECONDS) + "s";
+                long sec = TimeUnit.NANOSECONDS.toSeconds(nanosecond);
+                nanosecond -= TimeUnit.SECONDS.toNanos(sec);
+
+                long mls = TimeUnit.NANOSECONDS.toMillis(nanosecond);
+                nanosecond -= TimeUnit.MILLISECONDS.toNanos(mls);
+
+                long mcs = TimeUnit.NANOSECONDS.toMicros(nanosecond);
+                nanosecond -= TimeUnit.MICROSECONDS.toNanos(mcs);
+                result = sec + "s " + mls + "mls " + mcs + "mcs ";
                 break;
             case 2:
                 result = maxCuts.get(row).getMaxCut();

@@ -19,6 +19,7 @@ public class ParserManager {
             put("mb", new SimpleBoolMatrixGraphReader());
             put("eb", new SimpleBoolEdgeGraphReader());
             put("mw", new SimpleWeightMatrixGraphReader());
+            put("ew", new SimpleWeightEdgeGraphReader());
         }
     };
 

@@ -1,14 +1,13 @@
 package com.elvis.optimizationtask.ui.control;
 
 import com.elvis.graph.GraphVisualizator;
+import com.elvis.graph.generator.GraphGenerator;
 import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
-import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightBrutForce;
-import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightGeneticAlgorithm;
-import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightLorena;
-import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightRandom;
+import com.elvis.optimizationtask.algorithm.maxcut.weight.*;
 import com.elvis.optimizationtask.export.ExcelExporter;
 import com.elvis.optimizationtask.parser.ParserManager;
+import com.elvis.optimizationtask.ui.model.FileListModel;
 import com.elvis.optimizationtask.ui.model.MaxCutTableModel;
 import com.elvis.optimizationtask.ui.view.MaxCutTableCellRenderer;
 import com.elvis.optimizationtask.ui.view.MaxCutView;
@@ -19,6 +18,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -32,15 +33,16 @@ public class MaxCutController {
     JFrame frame;
     SimpleWeightGraph graph;
     MaxCutTableModel tableModel;
+    FileListModel listModel;
     private File[] filesForCalc;
+
+    JMenuBar menuBar = new JMenuBar();
 
     public void setFilesForCalc(File[] filesForCalc) {
         this.filesForCalc = filesForCalc;
-        String text = "";
         for (File file : filesForCalc) {
-            text += file.getName() + ",";
+            listModel.addFile(file);
         }
-        maxCutView.getFileNames().setText(text);
     }
 
     public MaxCutController(MaxCutView maxCutView) {
@@ -57,12 +59,15 @@ public class MaxCutController {
             maxCutView.getTable1().getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
 
-        maxCutView.getFileNames().setText("");
+        listModel = new FileListModel();
+        maxCutView.getFileList().setModel(listModel);
 
         maxCutView.getSelectFileButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                listModel.clear();
                 setFilesForCalc(chooseFileWithGraph());
+
             }
         });
         maxCutView.getStartCalcButton().addActionListener(new ActionListener() {
@@ -73,12 +78,17 @@ public class MaxCutController {
 
                 tableModel.clear();
                 step = 0;
-                for (File file : filesForCalc) {
-                    graph = getGraph(file);
-                    calculate();
-                    maxCutView.getProgressBar().setValue((int) (100 * step * 1.0 / filesForCalc.length));
-                    step++;
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (File file : filesForCalc) {
+                            graph = getGraph(file);
+                            calculate();
+                            maxCutView.getProgressBar().setValue((int) (100 * step * 1.0 / filesForCalc.length));
+                            step++;
+                        }
+                    }
+                }).start();
             }
         });
 
@@ -98,9 +108,40 @@ public class MaxCutController {
         maxCutView.getVisualizeGraphButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GraphVisualizator(getGraph(filesForCalc[0])).start();
+                int index = maxCutView.getFileList().getSelectedIndex();
+                if (index >= 0 && index < listModel.getSize()) {
+                    new GraphVisualizator(getGraph(listModel.get(index))).start();
+                }
             }
         });
+
+
+        JMenu menuFile = new JMenu("File");
+        JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        menuFile.add(exitItem);
+
+
+        JMenu menuTools = new JMenu("Tools");
+        JMenuItem item = new JMenuItem("Graph Generator");
+        item.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GraphGenerator().start();
+            }
+        });
+        menuTools.add(item);
+
+
+        menuBar.add(menuFile);
+        menuBar.add(menuTools);
+
+
     }
 
     File getFileForSaveXLS() {
@@ -122,6 +163,7 @@ public class MaxCutController {
         frame = new JFrame("Max Cut Algorithm");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setContentPane(maxCutView.getContentPane());
+        frame.setJMenuBar(menuBar);
         frame.setPreferredSize(new Dimension(500, 400));
         frame.pack();
     }
@@ -133,19 +175,29 @@ public class MaxCutController {
     }
 
     private void calculate() {
-        MaxCut[] maxCutsAlgorithms = {
-                new MaxCutWeightBrutForce(graph),
-                new MaxCutWeightGeneticAlgorithm(graph),
-                new MaxCutWeightLorena(graph),
-                new MaxCutWeightRandom(graph)
-        };
+        List<MaxCut> maxCutList = new ArrayList<MaxCut>();
+        if (maxCutView.getBrutForceCheckBox().isSelected()) {
+            maxCutList.add(new MaxCutWeightBrutForce(graph));
+        }
+        if (maxCutView.getGeneticAlgorithmCheckBox().isSelected()) {
+            maxCutList.add(new MaxCutWeightGeneticAlgorithm(graph));
+        }
+        if (maxCutView.getLorenaCheckBox().isSelected()) {
+            maxCutList.add(new MaxCutWeightLorena(graph));
+        }
+        if (maxCutView.getRandomCheckBox().isSelected()) {
+            maxCutList.add(new MaxCutWeightRandom(graph));
+        }
+        if (maxCutView.getGESCheckBox().isSelected()) {
+            maxCutList.add(new MaxCutWeightGlobalEquilibriumSearch(graph));
+        }
+
         Color color = getRandomColor();
         int locStep = 0;
-        for (MaxCut maxCutsAlgorithm : maxCutsAlgorithms) {
+        for (MaxCut maxCutsAlgorithm : maxCutList) {
             maxCutsAlgorithm.solve();
             tableModel.add(maxCutsAlgorithm, color);
-
-            maxCutView.getProgressBar().setValue((int) (100 * (step - 1) * 1.0f / filesForCalc.length + 100.0f / filesForCalc.length * locStep / maxCutsAlgorithms.length));
+            maxCutView.getProgressBar().setValue((int) (100 * step * 1.0f / filesForCalc.length + 100.0f / filesForCalc.length * locStep / maxCutList.size()));
             locStep++;
         }
     }

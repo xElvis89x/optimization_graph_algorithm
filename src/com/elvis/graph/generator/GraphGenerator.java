@@ -11,9 +11,12 @@ import java.awt.*;
 public class GraphGenerator {
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, IllegalAccessException, InstantiationException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        new GraphGenerator().start();
+    }
 
+    public void start() {
         JFrame frame = new JFrame("GraphGenerator");
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         GeneratorView view = new GeneratorView();
         new GeneratorController(view).init();
         frame.setContentPane(view.getContentPane());

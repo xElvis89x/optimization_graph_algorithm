@@ -9,7 +9,7 @@ package com.elvis.optimizationtask.algorithm.maxcut;
 public interface MaxCut {
     public long getTimeExec();
 
-    public long getMaxCut();
+    public float getMaxCut();
 
     public boolean[] getMask();
 

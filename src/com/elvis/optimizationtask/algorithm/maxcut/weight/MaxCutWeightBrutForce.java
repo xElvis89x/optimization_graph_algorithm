@@ -21,7 +21,8 @@ public class MaxCutWeightBrutForce extends MaxCutWeightAbstract {
         res_maxcut = 0;
 
         boolean mask[] = new boolean[n];
-        int i, j, cut;
+        int i, j;
+        float cut;
         do { //all cuts
             for (i = 0, cut = 0; i < n; i++) { //calculate cut value
                 for (j = i + 1; j < n; j++) {
