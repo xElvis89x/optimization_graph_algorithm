@@ -47,7 +47,7 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         for (int i = 0; i < countTemperatureFaze; i++) {
             for (int j = 0; j < maxn; j++) {
                 boolean[] p = chooseCandidate();
-                mutation(p, m);
+                //mutation(p, m);
                 p = tabuSearch(p, p_best, t);
                 eliteAdd(p);
                 if (cutValue(p) > cutValue(p_best)) {
@@ -55,7 +55,7 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
                     m = m1;
                 }
             }
-            tempRecalculation();
+            tempRecalculation(i);
             m = m >= m2 ? m1 : m + 1;
         }
         res_mask = p_best;
@@ -134,8 +134,13 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         return result;
     }
 
-    private void tempRecalculation() {
-
+    private void tempRecalculation(int step) {
+        double coef = 1.8 * 100000000 / graph.getSize();
+        if (step == 0) {
+            u = (float) (0.0000007 / coef);
+        } else {
+            u = (float) (u * (Math.log(10 / coef) - Math.log(0.0000007 / coef)) / 48);
+        }
     }
 
     private boolean[] chooseCandidate() {

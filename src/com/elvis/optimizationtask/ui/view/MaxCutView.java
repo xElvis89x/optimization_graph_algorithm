@@ -1,6 +1,10 @@
 package com.elvis.optimizationtask.ui.view;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by User: el
@@ -22,6 +26,42 @@ public class MaxCutView {
     private JCheckBox lorenaCheckBox;
     private JCheckBox randomCheckBox;
     private JCheckBox GESCheckBox;
+    private JLabel progressText;
+    private JButton selectAllButton;
+    private JButton inverseButton;
+
+    private List<JCheckBox> checkBoxList = new ArrayList<JCheckBox>() {
+        {
+            add(brutForceCheckBox);
+            add(geneticAlgorithmCheckBox);
+            add(lorenaCheckBox);
+            add(randomCheckBox);
+            add(GESCheckBox);
+        }
+    };
+
+    public MaxCutView() {
+        selectAllButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (JCheckBox jCheckBox : checkBoxList) {
+                    jCheckBox.setSelected(true);
+                }
+            }
+        });
+        inverseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (JCheckBox jCheckBox : checkBoxList) {
+                    jCheckBox.setSelected(!jCheckBox.isSelected());
+                }
+            }
+        });
+    }
+
+    public JLabel getProgressText() {
+        return progressText;
+    }
 
     public JCheckBox getBrutForceCheckBox() {
         return brutForceCheckBox;

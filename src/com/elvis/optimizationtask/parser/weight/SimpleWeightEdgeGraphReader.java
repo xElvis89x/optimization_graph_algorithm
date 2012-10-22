@@ -1,6 +1,7 @@
-package com.elvis.optimizationtask.parser;
+package com.elvis.optimizationtask.parser.weight;
 
 import com.elvis.model.SimpleWeightGraph;
+import com.elvis.optimizationtask.parser.AbstractGraphReader;
 
 import java.util.Scanner;
 

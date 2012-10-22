@@ -1,5 +1,10 @@
 package com.elvis.optimizationtask.parser;
 
+import com.elvis.optimizationtask.parser.bool.SimpleBoolEdgeGraphReader;
+import com.elvis.optimizationtask.parser.bool.SimpleBoolMatrixGraphReader;
+import com.elvis.optimizationtask.parser.weight.SimpleWeightEdgeGraphReader;
+import com.elvis.optimizationtask.parser.weight.SimpleWeightMatrixGraphReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;

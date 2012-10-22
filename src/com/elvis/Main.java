@@ -1,7 +1,6 @@
-package com.elvis.optimizationtask;
+package com.elvis;
 
-import com.elvis.optimizationtask.ui.control.MaxCutController;
-import com.elvis.optimizationtask.ui.view.MaxCutView;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -15,7 +14,9 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, IllegalAccessException, InstantiationException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        new MaxCutController(new MaxCutView()).start();
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
+        GUIShell shell = ((GUIShell) context.getBean("main_controller"));
+        shell.setVisible(true);
     }
 
 

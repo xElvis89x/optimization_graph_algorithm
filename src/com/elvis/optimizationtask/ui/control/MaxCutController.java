@@ -1,5 +1,6 @@
 package com.elvis.optimizationtask.ui.control;
 
+import com.elvis.GUIShell;
 import com.elvis.graph.GraphVisualizator;
 import com.elvis.graph.generator.GraphGenerator;
 import com.elvis.model.SimpleWeightGraph;
@@ -11,6 +12,7 @@ import com.elvis.optimizationtask.ui.model.FileListModel;
 import com.elvis.optimizationtask.ui.model.MaxCutTableModel;
 import com.elvis.optimizationtask.ui.view.MaxCutTableCellRenderer;
 import com.elvis.optimizationtask.ui.view.MaxCutView;
+import org.springframework.beans.factory.InitializingBean;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -28,26 +30,30 @@ import java.util.Random;
  * Time: 9:31
  * To change this template use File | Settings | File Templates.
  */
-public class MaxCutController {
-    MaxCutView maxCutView;
-    JFrame frame;
-    SimpleWeightGraph graph;
-    MaxCutTableModel tableModel;
-    FileListModel listModel;
+public class MaxCutController implements InitializingBean, GUIShell {
+    public static final int WIDTH = 700;
+    public static final int HEIGHT = 500;
+    private MaxCutView maxCutView;
+    private JFrame frame;
+    private SimpleWeightGraph graph;
+    private MaxCutTableModel tableModel;
+    private FileListModel listModel;
     private File[] filesForCalc;
 
-    JMenuBar menuBar = new JMenuBar();
+    private JMenuBar menuBar = new JMenuBar();
+
+    public MaxCutController() {
+    }
+
+    public void setMaxCutView(MaxCutView maxCutView) {
+        this.maxCutView = maxCutView;
+    }
 
     public void setFilesForCalc(File[] filesForCalc) {
         this.filesForCalc = filesForCalc;
         for (File file : filesForCalc) {
             listModel.addFile(file);
         }
-    }
-
-    public MaxCutController(MaxCutView maxCutView) {
-        this.maxCutView = maxCutView;
-        init();
     }
 
     public void init() {
@@ -84,8 +90,8 @@ public class MaxCutController {
                         for (File file : filesForCalc) {
                             graph = getGraph(file);
                             calculate();
-                            maxCutView.getProgressBar().setValue((int) (100 * step * 1.0 / filesForCalc.length));
                             step++;
+                            maxCutView.getProgressBar().setValue((int) (100 * step * 1.0 / filesForCalc.length));
                         }
                     }
                 }).start();
@@ -97,10 +103,19 @@ public class MaxCutController {
             public void actionPerformed(ActionEvent e) {
                 File file = getFileForSaveXLS();
                 if (file == null) return;
+                OutputStream fileStream = null;
                 try {
-                    new ExcelExporter(tableModel.getMaxCuts()).writeData(new FileOutputStream(file));
+                    fileStream = new FileOutputStream(file);
+                    new ExcelExporter(tableModel.getMaxCuts()).writeData(fileStream);
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
+                } finally {
+                    try {
+                        assert fileStream != null;
+                        fileStream.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });
@@ -164,8 +179,10 @@ public class MaxCutController {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setContentPane(maxCutView.getContentPane());
         frame.setJMenuBar(menuBar);
-        frame.setPreferredSize(new Dimension(500, 400));
-        frame.pack();
+        frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setBounds(new Rectangle((int) (screenSize.getWidth() / 2 - WIDTH / 2),
+                (int) (screenSize.getHeight() / 2 - HEIGHT / 2), WIDTH, HEIGHT));
     }
 
     Random random = new Random();
@@ -194,12 +211,15 @@ public class MaxCutController {
 
         Color color = getRandomColor();
         int locStep = 0;
+        maxCutView.getProgressText().setText("start solving maxcut for " + maxCutList.size() + " graphs");
         for (MaxCut maxCutsAlgorithm : maxCutList) {
+            maxCutView.getProgressText().setText("step: " + (step + 1) + ";  " + maxCutsAlgorithm.getHumanID() + " start solve");
             maxCutsAlgorithm.solve();
             tableModel.add(maxCutsAlgorithm, color);
-            maxCutView.getProgressBar().setValue((int) (100 * step * 1.0f / filesForCalc.length + 100.0f / filesForCalc.length * locStep / maxCutList.size()));
             locStep++;
+            maxCutView.getProgressBar().setValue((int) (100 * step * 1.0f / filesForCalc.length + 100.0f / filesForCalc.length * locStep / maxCutList.size()));
         }
+        maxCutView.getProgressText().setText("end solving maxcut for " + maxCutList.size() + " graphs");
     }
 
     private SimpleWeightGraph getGraph(File file) {
@@ -231,7 +251,13 @@ public class MaxCutController {
         return fileChooser.getSelectedFiles();
     }
 
-    public void start() {
-        frame.setVisible(true);
+    public void setVisible(boolean visible) {
+        frame.pack();
+        frame.setVisible(visible);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        init();
     }
 }
