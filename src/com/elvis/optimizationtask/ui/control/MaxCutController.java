@@ -1,7 +1,7 @@
 package com.elvis.optimizationtask.ui.control;
 
 import com.elvis.GUIShell;
-import com.elvis.graph.GraphVisualizator;
+import com.elvis.graph.visualizer.GraphVisualizator;
 import com.elvis.graph.generator.GraphGenerator;
 import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
