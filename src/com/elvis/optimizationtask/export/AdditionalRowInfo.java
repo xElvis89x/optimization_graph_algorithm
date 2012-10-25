@@ -5,7 +5,7 @@ package com.elvis.optimizationtask.export;
  * Date: 22.10.12
  * Time: 16:10
  */
-public class AdditionalInfo {
+public class AdditionalRowInfo {
     public int nodeCount;
     public int rowStart;
     public int rowEnd;

@@ -6,7 +6,7 @@ package com.elvis.model;
  * Time: 17:46
  * To change this template use File | Settings | File Templates.
  */
-public class SimpleBooleanGraph {
+public class SimpleBooleanGraph implements Graph {
     boolean[][] matrix;
 
 

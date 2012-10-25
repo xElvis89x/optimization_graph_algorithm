@@ -1,7 +1,8 @@
 package com.elvis.optimizationtask.export.plugins;
 
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
-import com.elvis.optimizationtask.export.AdditionalInfo;
+import com.elvis.optimizationtask.export.AdditionColInfo;
+import com.elvis.optimizationtask.export.AdditionalRowInfo;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.List;
@@ -15,7 +16,8 @@ public abstract class AbstractDataHandler implements DataHandler {
 
     protected Workbook workbook;
     protected List<MaxCut> maxCuts;
-    protected List<AdditionalInfo> additionalInfos;
+    protected List<AdditionalRowInfo> additionalRowInfos;
+    protected AdditionColInfo additionColInfo;
 
     public void setWorkbook(Workbook workbook) {
         this.workbook = workbook;
@@ -26,7 +28,12 @@ public abstract class AbstractDataHandler implements DataHandler {
     }
 
     @Override
-    public void setAdditionInfo(List<AdditionalInfo> additionInfo) {
-        additionalInfos = additionInfo;
+    public void setAdditionRowInfo(List<AdditionalRowInfo> additionRowInfo) {
+        additionalRowInfos = additionRowInfo;
+    }
+
+    @Override
+    public void setAdditionColInfo(AdditionColInfo additionColInfo) {
+        this.additionColInfo = additionColInfo;
     }
 }

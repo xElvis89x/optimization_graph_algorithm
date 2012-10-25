@@ -1,13 +1,13 @@
 package com.elvis.optimizationtask.export;
 
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
-import com.elvis.optimizationtask.export.plugins.DataHandler;
-import com.elvis.optimizationtask.export.plugins.ExcelAVGTimeDataHandler;
-import com.elvis.optimizationtask.export.plugins.ExcelMaxTimeDataHandler;
+import com.elvis.optimizationtask.export.plugins.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellReference;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -19,6 +19,7 @@ import java.util.*;
  * Time: 0:24
  */
 public class ExcelExporter {
+    public static final int shiftAdditionCalc = 15;
     private List<MaxCut> maxCuts;
 
     public ExcelExporter(List<MaxCut> list) {
@@ -38,15 +39,22 @@ public class ExcelExporter {
         {
             add(new ExcelAVGTimeDataHandler());
             add(new ExcelMaxTimeDataHandler());
+            add(new ExcelAVGDeflectionDataHandler());
+            add(new ExcelMaxDeflectionDataHandler());
         }
     };
 
     void pluginsStart(Workbook wb) {
         for (DataHandler dataHandler : handlerList) {
-            dataHandler.setMaxCuts(maxCuts);
-            dataHandler.setWorkbook(wb);
-            dataHandler.setAdditionInfo(additionalData);
-            dataHandler.start();
+            try {
+                dataHandler.setMaxCuts(maxCuts);
+                dataHandler.setWorkbook(wb);
+                dataHandler.setAdditionRowInfo(additionalRowData);
+                dataHandler.setAdditionColInfo(additionColInfo);
+                dataHandler.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -78,24 +86,35 @@ public class ExcelExporter {
                 r.put(dataForWriting.lastRow, row = sheet.createRow(dataForWriting.lastRow));
                 row.createCell(0).setCellValue(maxCut.getMask().length);
             }
-            row.createCell(dataForWriting.algorithmIndex * countColumn + 1).setCellValue(maxCut.getTimeExec());
-            row.createCell(dataForWriting.algorithmIndex * countColumn + 2).setCellValue(maxCut.getMaxCut());
+            Cell timeCell = row.createCell(dataForWriting.algorithmIndex * countColumn + 1);
+            timeCell.setCellValue(maxCut.getTimeExec());
 
-            if (additionalData.size() == 0 || additionalData.getLast().nodeCount != maxCut.getMask().length) {
-                if (additionalData.size() != 0) {
-                    additionalData.getLast().rowEnd = dataForWriting.lastRow;
+            Cell cutCell = row.createCell(dataForWriting.algorithmIndex * countColumn + 2);
+            cutCell.setCellValue(maxCut.getMaxCut());
+
+
+            Cell c = row.createCell(dataForWriting.algorithmIndex + shiftAdditionCalc);
+            c.setCellFormula(new CellReference(dataForWriting.lastRow, 2).formatAsString()
+                    + "-"
+                    + new CellReference(cutCell).formatAsString());
+
+            if (additionalRowData.size() == 0 || additionalRowData.getLast().nodeCount != maxCut.getMask().length) {
+                if (additionalRowData.size() != 0) {
+                    additionalRowData.getLast().rowEnd = dataForWriting.lastRow - 1;
                 }
-                AdditionalInfo data = new AdditionalInfo();
+                AdditionalRowInfo data = new AdditionalRowInfo();
                 data.nodeCount = maxCut.getMask().length;
-                data.rowStart = dataForWriting.lastRow + 1;
-                additionalData.add(data);
+                data.rowStart = dataForWriting.lastRow;
+                additionalRowData.add(data);
             }
             lastRow = dataForWriting.lastRow;
         }
-        additionalData.getLast().rowEnd = lastRow + 1;
+        additionColInfo.deflectionCol = shiftAdditionCalc;
+        additionalRowData.getLast().rowEnd = lastRow;
     }
 
-    private LinkedList<AdditionalInfo> additionalData = new LinkedList<AdditionalInfo>();
+    private LinkedList<AdditionalRowInfo> additionalRowData = new LinkedList<AdditionalRowInfo>();
+    private AdditionColInfo additionColInfo = new AdditionColInfo();
 
 
     private void writeToFile(OutputStream outputStream, Workbook wb) {

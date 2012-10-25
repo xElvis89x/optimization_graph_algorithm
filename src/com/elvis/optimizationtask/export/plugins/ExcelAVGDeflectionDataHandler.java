@@ -1,9 +1,10 @@
 package com.elvis.optimizationtask.export.plugins;
 
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
-import com.elvis.optimizationtask.export.AdditionalInfo;
+import com.elvis.optimizationtask.export.AdditionalRowInfo;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellReference;
 
 /**
  * Created by User: el
@@ -12,21 +13,24 @@ import org.apache.poi.ss.usermodel.Sheet;
  */
 public class ExcelAVGDeflectionDataHandler extends AbstractDataHandler {
     public void start() {
-        Sheet sheet2 = workbook.createSheet("AVGTime");
+        Sheet sheet2 = workbook.createSheet("AVGDeflection");
         int methodsCount = createHeader(sheet2);
 
         int rowIndex = 2;
-        for (AdditionalInfo addInfo : additionalInfos) {
+        for (AdditionalRowInfo addRowInfo : additionalRowInfos) {
             Row row = sheet2.createRow(rowIndex);
 
-            row.createCell(0).setCellFormula("AVERAGE(Sheet0!A" + addInfo.rowStart + ":A" + addInfo.rowEnd + ")");
+            row.createCell(0).setCellFormula("AVERAGE(Sheet0!" + new CellReference(addRowInfo.rowStart, 0).formatAsString() +
+                    ":" + new CellReference(addRowInfo.rowEnd, 0).formatAsString() + ")");
             for (int i = 1; i < methodsCount; i++) {
-                char col = (char) ('A' + (char) i * 2 - 1);
-                row.createCell(i).setCellFormula("AVERAGE(Sheet0!" + col + addInfo.rowStart + ":" + col + addInfo.rowEnd + ")");
+                String startCell = new CellReference(addRowInfo.rowStart, additionColInfo.deflectionCol + i - 1).formatAsString();
+                String endCell = new CellReference(addRowInfo.rowEnd, additionColInfo.deflectionCol + i - 1).formatAsString();
+                row.createCell(i).setCellFormula("AVERAGE(Sheet0!" + startCell + ":" + endCell + ")");
             }
             rowIndex++;
         }
     }
+
 
     private int createHeader(Sheet sheet2) {
         Row row = sheet2.createRow(0);

@@ -3,9 +3,32 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="main_controller" class="com.elvis.optimizationtask.ui.control.MaxCutController">
+        <property name="tableModel" ref="resulttablemodel"/>
+        <property name="frame" ref="frame"/>
+        <property name="menuBar" ref="menu"/>
         <property name="maxCutView" ref="main_view"/>
+        <property name="fileChooser">
+            <bean class="javax.swing.JFileChooser">
+                <property name="acceptAllFileFilterUsed" value="false"/>
+            </bean>
+        </property>
+        <property name="algorithmCalculation" ref="algorithmCalculation"/>
     </bean>
 
     <bean id="main_view" class="com.elvis.optimizationtask.ui.view.MaxCutView"/>
+
+    <bean id="frame" class="javax.swing.JFrame">
+        <property name="title" value="Max Cut"/>
+        <property name="JMenuBar" ref="menu"/>
+    </bean>
+    <bean id="menu" class="javax.swing.JMenuBar"/>
+
+    <bean id="resulttablemodel" class="com.elvis.optimizationtask.ui.model.MaxCutTableModel"/>
+
+    <bean id="algorithmCalculation" class="com.elvis.optimizationtask.ui.control.AlgorithmCalculation">
+        <property name="maxCutController" ref="main_controller"/>
+        <property name="maxCutView" ref="main_view"/>
+        <property name="tableModel" ref="resulttablemodel"/>
+    </bean>
 
 </beans>

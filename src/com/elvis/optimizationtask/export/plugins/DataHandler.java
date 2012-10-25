@@ -1,7 +1,8 @@
 package com.elvis.optimizationtask.export.plugins;
 
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
-import com.elvis.optimizationtask.export.AdditionalInfo;
+import com.elvis.optimizationtask.export.AdditionColInfo;
+import com.elvis.optimizationtask.export.AdditionalRowInfo;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface DataHandler {
 
     public void setMaxCuts(List<MaxCut> maxCuts);
 
-    public void setAdditionInfo(List<AdditionalInfo> additionInfo);
+    public void setAdditionRowInfo(List<AdditionalRowInfo> additionRowInfo);
+
+    public void setAdditionColInfo(AdditionColInfo additionColInfo);
 
 }

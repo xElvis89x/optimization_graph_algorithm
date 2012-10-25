@@ -8,13 +8,12 @@ import org.apache.poi.ss.util.CellReference;
 
 /**
  * Created by User: el
- * Date: 18.10.12
- * Time: 10:55
+ * Date: 24.10.12
+ * Time: 22:37
  */
-public class ExcelMaxTimeDataHandler extends AbstractDataHandler {
-    @Override
+public class ExcelMaxDeflectionDataHandler extends AbstractDataHandler {
     public void start() {
-        Sheet sheet2 = workbook.createSheet("MAXTime");
+        Sheet sheet2 = workbook.createSheet("MAXDeflection");
         int methodsCount = createHeader(sheet2);
 
         int rowIndex = 2;
@@ -24,17 +23,18 @@ public class ExcelMaxTimeDataHandler extends AbstractDataHandler {
             row.createCell(0).setCellFormula("AVERAGE(Sheet0!" + new CellReference(addRowInfo.rowStart, 0).formatAsString() +
                     ":" + new CellReference(addRowInfo.rowEnd, 0).formatAsString() + ")");
             for (int i = 1; i < methodsCount; i++) {
-                String startCell = new CellReference(addRowInfo.rowStart, i * 2 - 1).formatAsString();
-                String endCell = new CellReference(addRowInfo.rowEnd, i * 2 - 1).formatAsString();
+                String startCell = new CellReference(addRowInfo.rowStart, additionColInfo.deflectionCol + i - 1).formatAsString();
+                String endCell = new CellReference(addRowInfo.rowEnd, additionColInfo.deflectionCol + i - 1).formatAsString();
                 row.createCell(i).setCellFormula("MAX(Sheet0!" + startCell + ":" + endCell + ")");
             }
             rowIndex++;
         }
     }
 
+
     private int createHeader(Sheet sheet2) {
         Row row = sheet2.createRow(0);
-        row.createCell(0).setCellValue("Максимальное  время выполнения");
+        row.createCell(0).setCellValue("Максимальное отклонение");
         row = sheet2.createRow(1);
         int methodsCount = 1;
         for (MaxCut maxCut : maxCuts) {

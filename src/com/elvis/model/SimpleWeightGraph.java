@@ -5,7 +5,7 @@ package com.elvis.model;
  * Date: 09.10.12
  * Time: 15:17
  */
-public class SimpleWeightGraph {
+public class SimpleWeightGraph implements Graph {
     float[][] matrix;
 
 
