@@ -60,7 +60,7 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
 
         IChromosome fittest = genotype.getFittestChromosome();
 
-        res_maxcut = (long) fittest.getFitnessValue();
+        //res_maxcut = (long) fittest.getFitnessValue();
         int i = 0;
         for (Gene gene : fittest.getGenes()) {
             res_mask[i++] = ((BooleanGene) gene).booleanValue();

@@ -17,12 +17,25 @@ public class MaxCutWeightLorena extends MaxCutWeightAbstract {
         super(graph);
     }
 
+//    {
+//        System.loadLibrary("MaxCutLib");
+//    }
+
+    //    public interface NativeRealization extends Library {
+//        NativeRealization INSTANCE = (NativeRealization) Native.loadLibrary("MaxCutLib", NativeRealization.class);
+//
+//        boolean[] getMaxCutByLorena(float[][] graphMatrix, int size);
+//    }
+//    public native boolean[] getMaxCutByLorena(float[][] graphMatrix, int size);
+
     @Override
     public void calc() {
+        int n = graph.getSize();
+//        getMaxCutByLorena(graph.getMatrix(), graph.getSize());
+
         int i, j, k;
         double g, x, sum, sum1, sum2, t;
 
-        int n = graph.getSize();
         res_mask = new boolean[n];
         double q[] = new double[n];
         double y[] = new double[n]; //values [0..2*pi]
@@ -66,14 +79,6 @@ public class MaxCutWeightLorena extends MaxCutWeightAbstract {
         }
         for (k = 0; k < n; k++) {
             res_mask[k] = Math.signum(Math.sin(q[k] - x)) != 1;
-        }
-
-        for (i = 0, res_maxcut = 0; i < n; i++) {
-            for (j = i + 1; j < n; j++) {
-                if (res_mask[i] != res_mask[j]) {
-                    res_maxcut += graph.getCell(i, j);
-                }
-            }
         }
     }
 

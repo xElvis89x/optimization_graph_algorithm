@@ -24,6 +24,9 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
     Set<boolean[]> eliteSet;
     float u = 0;
     float t;
+    double Z;
+    int maxSizeTabuList = 20;
+    Set<boolean[]> neighborhoodSet = new HashSet<boolean[]>();
 
     @Override
     public void calc() {
@@ -57,12 +60,11 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
             }
             tempRecalculation(i);
             m = m >= m2 ? m1 : m + 1;
+
         }
         res_mask = p_best;
-        res_maxcut = cutValue(res_mask);
     }
 
-    double Z;
 
     private void eliteAdd(boolean[] mask/*, boolean[] mask_old*/) {
         //float cv_old = cutValue(mask_old);
@@ -72,22 +74,19 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
             eliteSet.add(mask);
         }
         Z = Z /*- Math.exp(-u * cv_old)*/ + Math.exp(-u * cv);
-
     }
 
     private void mutation(boolean[] mask, float m) {
 
     }
 
-
-    int maxSizeTabuList = 20;
-
     private boolean[] tabuSearch(boolean[] mask, boolean[] mask_best, float t) {
         float bestValue = cutValue(mask_best);
         boolean[] sBest = mask;
         LinkedList<boolean[]> tabuSet = new LinkedList<boolean[]>();
+        Set<boolean[]> candidateSet = new HashSet<boolean[]>();
         for (int i = 0; i < t; i++) {
-            Set<boolean[]> candidateSet = new HashSet<boolean[]>();
+            candidateSet.clear();
 
             Set<boolean[]> neighborhoods = getNeighborhood(sBest);
             for (boolean sCandidate[] : neighborhoods) {
@@ -99,7 +98,6 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
 
             float sCandValue = cutValue(sCandidate);
             if (sCandValue > bestValue) {
-                //tabuSet.remove(sBest);
                 bestValue = sCandValue;
                 sBest = sCandidate;
                 tabuSet.add(sBest);
@@ -112,12 +110,12 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
     }
 
     boolean[] LocateBestCandidate(Set<boolean[]> set) {
-        boolean[] result = (boolean[]) set.toArray()[0];
+        boolean[] result = null;
         float val = 0;
-        for (boolean[] booleans : set) {
-            float c = cutValue(booleans);
+        for (boolean[] mask : set) {
+            float c = cutValue(mask);
             if (c > val) {
-                result = booleans;
+                result = mask;
                 val = c;
             }
         }
@@ -125,13 +123,13 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
     }
 
     Set<boolean[]> getNeighborhood(boolean[] mask) {
-        Set<boolean[]> result = new HashSet<boolean[]>();
+        neighborhoodSet.clear();
         for (int i = 0; i < mask.length; i++) {
             boolean[] next = mask.clone();
             next[i] = !next[i];
-            result.add(next);
+            neighborhoodSet.add(next);
         }
-        return result;
+        return neighborhoodSet;
     }
 
     private void tempRecalculation(int step) {
@@ -163,7 +161,7 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         boolean[] p_best = new boolean[graph.getSize()];
         for (int i = 0; i < eliteSize; i++) {
             boolean[] randSol = generateRandomSolution(graph.getSize());
-            tabuSearch(randSol, p_best, t);
+            randSol = tabuSearch(randSol, p_best, t);
             if (cutValue(randSol) > cutValue(p_best)) {
                 p_best = randSol;
             }
@@ -181,16 +179,6 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
             result[i] = rand.nextBoolean();
         }
         return result;
-    }
-
-    public float cutValue(boolean[] mask) {
-        float cut = 0;
-        for (int i = 0; i < graph.getSize(); i++) {
-            for (int j = i + 1; j < graph.getSize(); j++) {
-                cut += graph.getCell(i, j) * (mask[i] != mask[j] ? 1 : 0);
-            }
-        }
-        return cut;
     }
 
     @Override

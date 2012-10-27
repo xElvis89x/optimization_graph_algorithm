@@ -1,7 +1,6 @@
 package com.elvis.optimizationtask.ui.control;
 
 import com.elvis.GUIShell;
-import com.elvis.graph.generator.GraphGenerator;
 import com.elvis.graph.visualizer.GraphVisualizator;
 import com.elvis.optimizationtask.export.ExcelExporter;
 import com.elvis.optimizationtask.ui.model.FileListModel;
@@ -32,7 +31,6 @@ public class MaxCutController implements InitializingBean, GUIShell {
 
     private MaxCutView maxCutView;
     private JFrame frame;
-    private JMenuBar menuBar;
     private JFileChooser fileChooser;
     private AlgorithmCalculation algorithmCalculation;
 
@@ -46,10 +44,6 @@ public class MaxCutController implements InitializingBean, GUIShell {
 
     public void setFrame(JFrame frame) {
         this.frame = frame;
-    }
-
-    public void setMenuBar(JMenuBar menuBar) {
-        this.menuBar = menuBar;
     }
 
     public void setFileChooser(JFileChooser fileChooser) {
@@ -130,31 +124,6 @@ public class MaxCutController implements InitializingBean, GUIShell {
                 }
             }
         });
-
-
-        JMenu menuFile = new JMenu("File");
-        JMenuItem exitItem = new JMenuItem("Exit");
-        exitItem.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        menuFile.add(exitItem);
-
-
-        JMenu menuTools = new JMenu("Tools");
-        JMenuItem item = new JMenuItem("Graph Generator");
-        item.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new GraphGenerator().start();
-            }
-        });
-        menuTools.add(item);
-
-        menuBar.add(menuFile);
-        menuBar.add(menuTools);
     }
 
 
@@ -176,7 +145,7 @@ public class MaxCutController implements InitializingBean, GUIShell {
     private FileNameExtensionFilter graphFilter = new FileNameExtensionFilter("Graph file", "graph");
 
     File getFileForSaveXLS() {
-        initFileChooser(xlsFilter, graphFilter, false);
+        initFileChooser(xlsFilter, false);
         fileChooser.showSaveDialog(frame);
         File f = fileChooser.getSelectedFile();
         if (f == null) return null;
@@ -186,15 +155,17 @@ public class MaxCutController implements InitializingBean, GUIShell {
     }
 
     private File[] chooseFileWithGraph() {
-        initFileChooser(graphFilter, xlsFilter, true);
+        initFileChooser(graphFilter, true);
         fileChooser.showOpenDialog(frame);
         return fileChooser.getSelectedFiles();
     }
 
-    private void initFileChooser(FileNameExtensionFilter addFilter, FileNameExtensionFilter removeFilter, Boolean multi) {
+    private void initFileChooser(FileNameExtensionFilter addFilter, Boolean multi) {
+        fileChooser.cancelSelection();
+        fileChooser.setSelectedFiles(null);
         fileChooser.setCurrentDirectory(new File("."));
         fileChooser.setMultiSelectionEnabled(multi);
-        fileChooser.removeChoosableFileFilter(removeFilter);
+        fileChooser.resetChoosableFileFilters();
         fileChooser.addChoosableFileFilter(addFilter);
     }
 

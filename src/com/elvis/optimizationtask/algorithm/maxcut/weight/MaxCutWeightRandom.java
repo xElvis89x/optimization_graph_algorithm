@@ -14,23 +14,15 @@ public class MaxCutWeightRandom extends MaxCutWeightAbstract {
         super(graph);
     }
 
+    private static Random rand = new Random(System.nanoTime());
+
     @Override
     public void calc() {
-        int n = graph.getSize();
-        res_mask = getRandomMask();
-        int i, j;
-        for (i = 0, res_maxcut = 0; i < n; i++) { //calculate cut value
-            for (j = i + 1; j < n; j++) {
-                if (res_mask[i] != res_mask[j]) {
-                    res_maxcut += graph.getCell(i, j);
-                }
-            }
-        }
+        res_mask = getRandomMask(graph.getSize());
     }
 
-    private boolean[] getRandomMask() {
-        boolean[] result = new boolean[graph.getSize()];
-        Random rand = new Random(System.nanoTime());
+    private static boolean[] getRandomMask(int n) {
+        boolean[] result = new boolean[n];
         for (int i = 0; i < result.length; i++) {
             result[i] = rand.nextBoolean();
         }

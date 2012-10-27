@@ -9,6 +9,10 @@ public class SimpleWeightGraph implements Graph {
     float[][] matrix;
 
 
+    public float[][] getMatrix() {
+        return matrix;
+    }
+
     public void create(int size) {
         matrix = new float[size][size];
     }

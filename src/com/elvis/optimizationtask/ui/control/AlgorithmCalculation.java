@@ -18,7 +18,6 @@ import java.util.List;
  */
 public class AlgorithmCalculation implements Runnable {
     private MaxCutView maxCutView;
-    private MaxCutController maxCutController;
     private MaxCutTableModel tableModel;
     private File[] filesForCalc;
 
@@ -28,10 +27,6 @@ public class AlgorithmCalculation implements Runnable {
 
     public void setTableModel(MaxCutTableModel tableModel) {
         this.tableModel = tableModel;
-    }
-
-    public void setMaxCutController(MaxCutController maxCutController) {
-        this.maxCutController = maxCutController;
     }
 
     public void setFilesForCalc(File[] filesForCalc) {

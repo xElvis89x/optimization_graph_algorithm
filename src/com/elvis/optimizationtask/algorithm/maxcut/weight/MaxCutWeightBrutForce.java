@@ -18,19 +18,13 @@ public class MaxCutWeightBrutForce extends MaxCutWeightAbstract {
     public void calc() {
         int n = graph.getSize();
         res_mask = new boolean[n];
-        res_maxcut = 0;
-
         boolean mask[] = new boolean[n];
-        int i, j;
-        float cut;
-        do { //all cuts
-            for (i = 0, cut = 0; i < n; i++) { //calculate cut value
-                for (j = i + 1; j < n; j++) {
-                    cut += graph.getCell(i, j) * (mask[i] != mask[j] ? 1 : 0);
-                }
-            }
-            if (res_maxcut < cut) { //store result
-                res_maxcut = cut;
+
+        float cut, best = 0;
+        do {
+            cut = cutValue(mask);
+            if (best < cut) { //store result
+                best = cut;
                 System.arraycopy(mask, 0, res_mask, 0, n);
             }
         } while (nextPermutation(mask));
