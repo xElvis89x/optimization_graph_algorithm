@@ -3,6 +3,7 @@ package com.elvis.optimizationtask.ui.control;
 import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
 import com.elvis.optimizationtask.algorithm.maxcut.weight.*;
+import com.elvis.optimizationtask.algorithm.maxcut.weight.self.MaxCutWeightGAWithCore;
 import com.elvis.optimizationtask.ui.model.MaxCutTableModel;
 import com.elvis.optimizationtask.ui.view.MaxCutView;
 
@@ -80,6 +81,9 @@ public class AlgorithmCalculation implements Runnable {
         }
         if (maxCutView.getGESCheckBox().isSelected()) {
             maxCutList.add(new MaxCutWeightGlobalEquilibriumSearch(graph));
+        }
+        if (maxCutView.getSelfGAWithCoreCheckBox().isSelected()) {
+            maxCutList.add(new MaxCutWeightGAWithCore(graph));
         }
 
         Color color = Utils.getRandomColor();

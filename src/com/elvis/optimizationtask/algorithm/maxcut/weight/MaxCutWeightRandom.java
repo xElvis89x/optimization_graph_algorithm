@@ -2,8 +2,6 @@ package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
 import com.elvis.model.SimpleWeightGraph;
 
-import java.util.Random;
-
 /**
  * Created by User: el
  * Date: 12.10.12
@@ -14,19 +12,9 @@ public class MaxCutWeightRandom extends MaxCutWeightAbstract {
         super(graph);
     }
 
-    private static Random rand = new Random(System.nanoTime());
-
     @Override
     public void calc() {
-        res_mask = getRandomMask(graph.getSize());
-    }
-
-    private static boolean[] getRandomMask(int n) {
-        boolean[] result = new boolean[n];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = rand.nextBoolean();
-        }
-        return result;
+        res_mask = getRandomSolution(graph.getSize());
     }
 
     @Override

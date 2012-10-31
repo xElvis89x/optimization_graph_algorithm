@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Map;
 
 /**
  * Created by User: el
@@ -23,6 +24,8 @@ public class VisualizerView extends JPanel {
     final float zoomAddConst = 0.1f;
 
     int NODE_SIZE = 7;
+
+    private boolean[] MaxCutMask;
 
     private JPanel contentPane;
     private JButton zoomOutButton;
@@ -55,6 +58,10 @@ public class VisualizerView extends JPanel {
         VisualizationMoveHandler visualizationMoveHandler = new VisualizationMoveHandler();
         addMouseMotionListener(visualizationMoveHandler);
         addMouseListener(visualizationMoveHandler);
+    }
+
+    public void setMaxCutMask(boolean[] maxCutMask) {
+        MaxCutMask = maxCutMask;
     }
 
     Point center = new Point();
@@ -112,6 +119,12 @@ public class VisualizerView extends JPanel {
         }
     }
 
+    Map<Particle, Integer> particleIntegerMap;
+
+    public void setParticleIntegerMap(Map<Particle, Integer> particleIntegerMap) {
+        this.particleIntegerMap = particleIntegerMap;
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -129,11 +142,22 @@ public class VisualizerView extends JPanel {
             traer.physics.Spring e = physics.getSpring(i);
             Particle a = e.getOneEnd();
             Particle b = e.getTheOtherEnd();
+            if (MaxCutMask[particleIntegerMap.get(a)] != MaxCutMask[particleIntegerMap.get(b)]) {
+                g2.setColor(Color.RED);
+            } else {
+                g2.setColor(Color.BLACK);
+            }
             g2.drawLine((int) a.position().x(), (int) a.position().y(), (int) b.position().x(), (int) b.position().y());
         }
         for (int i = 0; i < physics.numberOfParticles(); ++i) {
             Particle v = physics.getParticle(i);
-            g2.setColor(v.mass() > 20 ? Color.RED : Color.BLACK);
+
+            if (i != 0) {
+                g2.setColor(MaxCutMask[i - 1] ? Color.GREEN : Color.BLUE);
+            } else {
+                g2.setColor(Color.RED);
+            }
+
             g2.fillOval((int) v.position().x() - NODE_SIZE / 2, (int) v.position().y() - NODE_SIZE / 2, NODE_SIZE, NODE_SIZE);
         }
     }

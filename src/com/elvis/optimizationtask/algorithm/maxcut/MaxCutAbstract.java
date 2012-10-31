@@ -8,7 +8,7 @@ package com.elvis.optimizationtask.algorithm.maxcut;
 public abstract class MaxCutAbstract implements MaxCut {
     public abstract void calc();
 
-    long timeExec;
+    protected long timeExec;
 
     public long getTimeExec() {
         return timeExec;

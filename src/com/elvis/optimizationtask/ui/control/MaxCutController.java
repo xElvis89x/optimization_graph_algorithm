@@ -1,7 +1,10 @@
 package com.elvis.optimizationtask.ui.control;
 
 import com.elvis.GUIShell;
-import com.elvis.graph.visualizer.GraphVisualizator;
+import com.elvis.graph.visualizer.GraphVisualizer;
+import com.elvis.model.Graph;
+import com.elvis.model.SimpleWeightGraph;
+import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
 import com.elvis.optimizationtask.export.ExcelExporter;
 import com.elvis.optimizationtask.ui.model.FileListModel;
 import com.elvis.optimizationtask.ui.model.MaxCutTableModel;
@@ -120,10 +123,23 @@ public class MaxCutController implements InitializingBean, GUIShell {
             public void actionPerformed(ActionEvent e) {
                 int index = maxCutView.getFileList().getSelectedIndex();
                 if (index >= 0 && index < listModel.getSize()) {
-                    new GraphVisualizator(Utils.getGraph(listModel.get(index))).start();
+                    SimpleWeightGraph graph = Utils.getGraph(listModel.get(index));
+                    GraphVisualizer visualizer = new GraphVisualizer(graph);
+                    visualizer.setMaxCutMask(getMaxCutForGraph(graph).getMask());
+                    visualizer.start();
                 }
             }
         });
+    }
+
+    MaxCut getMaxCutForGraph(Graph graph) {
+        MaxCut result = null;
+        for (MaxCut maxCut : tableModel.getMaxCuts()) {
+            if (maxCut.getGraph().equals(graph)) {
+                result = maxCut;
+            }
+        }
+        return result;
     }
 
 

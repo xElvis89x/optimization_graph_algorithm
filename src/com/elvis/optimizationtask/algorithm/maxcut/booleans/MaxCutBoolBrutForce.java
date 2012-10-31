@@ -29,7 +29,7 @@ public class MaxCutBoolBrutForce extends MaxCutBoolAbstract {
 
     @Override
     public void calc() {
-        int n = simpleBooleanGraph.getSize();
+        int n = graph.getSize();
         res_mask = new boolean[n];
         res_maxcut = 0;
 
@@ -38,7 +38,7 @@ public class MaxCutBoolBrutForce extends MaxCutBoolAbstract {
         do { //all cuts
             for (i = 0, cut = 0; i < n; i++) { //calculate cut value
                 for (j = i + 1; j < n; j++) {
-                    cut += (simpleBooleanGraph.getCell(i, j) && mask[i] != mask[j]) ? 1 : 0;
+                    cut += (graph.getCell(i, j) && mask[i] != mask[j]) ? 1 : 0;
                 }
             }
             if (res_maxcut < cut) { //store result

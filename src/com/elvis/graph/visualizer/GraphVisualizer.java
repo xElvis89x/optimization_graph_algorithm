@@ -9,6 +9,8 @@ import traer.physics.Vector3D;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -17,7 +19,7 @@ import java.util.Random;
  * Time: 19:17
  * http://www.aharef.info/static/htmlgraph/sourcecode.html
  */
-public class GraphVisualizator {
+public class GraphVisualizer {
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
@@ -27,27 +29,36 @@ public class GraphVisualizator {
 
     SimpleWeightGraph graph;
 
-    public GraphVisualizator(SimpleWeightGraph graph) {
+    public GraphVisualizer(SimpleWeightGraph graph) {
         this.graph = graph;
     }
 
+    boolean[] maxCutMask;
+
+    public void setMaxCutMask(boolean[] maxCutMask) {
+        this.maxCutMask = maxCutMask;
+    }
     //    public static void main(String[] args) {
-//        new GraphVisualizator().start();
+//        new GraphVisualizer().start();
 //    }
 
     ParticleSystem physics;
     Smoother3D centroid;
     JFrame frame;
 
+    Map<Particle, Integer> particleIntegerMap = new HashMap<Particle, Integer>();
+
     public void start() {
         physics = new ParticleSystem(0, 0.25f);
         centroid = new Smoother3D(0.0f, 0.0f, 1.0f, 0.8f);
         physics.clear();
 
-        frame = new JFrame("Graph Visualisation");
+        frame = new JFrame("Graph Visualizer");
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setPreferredSize(size);
         VisualizerView v = new VisualizerView(physics, centroid);
+        v.setMaxCutMask(maxCutMask);
+        v.setParticleIntegerMap(particleIntegerMap);
         frame.setContentPane(v);
         frame.pack();
         frame.setVisible(true);
@@ -72,6 +83,7 @@ public class GraphVisualizator {
                         time = System.currentTimeMillis();
                         if (step < graph.getSize()) {
                             Particle a = physics.makeParticle(10, rand.nextInt(100) - 50, rand.nextInt(100) - 50, 0);
+                            particleIntegerMap.put(a, step);
                             for (int i = 0; i < step; i++) {
                                 if (graph.getCell(i, step) != 0) {
                                     physics.makeSpring(a, listParticle.get(i), EDGE_STRENGTH, EDGE_STRENGTH, EDGE_LENGTH * graph.getCell(i, step));

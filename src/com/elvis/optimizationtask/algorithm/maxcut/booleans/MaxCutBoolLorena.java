@@ -23,7 +23,7 @@ public class MaxCutBoolLorena extends MaxCutBoolAbstract {
         int i, j, k;
         double g, x, sum, sum1, sum2, t;
 
-        int n = simpleBooleanGraph.getSize();
+        int n = graph.getSize();
         res_mask = new boolean[n];
         double q[] = new double[n];
         double y[] = new double[n]; //values [0..2*pi]
@@ -40,7 +40,7 @@ public class MaxCutBoolLorena extends MaxCutBoolAbstract {
                 y[k] = q[k];
                 //for (p = 0.0; p <= pi2; p+= 0.0001) { //increase precision
                 for (j = 0, sum1 = sum2 = 0.0; j < n; j++) {
-                    if (simpleBooleanGraph.getCell(k, j)) {
+                    if (graph.getCell(k, j)) {
                         sum1 += Math.sin(y[j]);
                         sum2 += Math.cos(y[j]);
                     }
@@ -56,7 +56,7 @@ public class MaxCutBoolLorena extends MaxCutBoolAbstract {
         for (k = 0, g = INFINITY, x = -1; k < n; k++) {
             for (i = 0, sum = 0.0; i < n; i++) {
                 for (j = i + 1; j < n; j++) {
-                    sum += simpleBooleanGraph.getCell(i, j) ? 1 : 0
+                    sum += graph.getCell(i, j) ? 1 : 0
                             * Math.signum(Math.sin(q[j] - q[k]) * Math.sin(q[i] - q[k]));
                 }
             }
@@ -71,7 +71,7 @@ public class MaxCutBoolLorena extends MaxCutBoolAbstract {
 
         for (i = 0, res_maxcut = 0; i < n; i++) {
             for (j = i + 1; j < n; j++) {
-                res_maxcut += (simpleBooleanGraph.getCell(i, j) && res_mask[i] != res_mask[j]) ? 1 : 0;
+                res_maxcut += (graph.getCell(i, j) && res_mask[i] != res_mask[j]) ? 1 : 0;
             }
         }
     }

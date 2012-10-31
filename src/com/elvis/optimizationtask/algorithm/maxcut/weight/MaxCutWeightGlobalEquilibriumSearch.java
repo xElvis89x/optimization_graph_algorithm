@@ -3,8 +3,6 @@ package com.elvis.optimizationtask.algorithm.maxcut.weight;
 import com.elvis.model.SimpleWeightGraph;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Random;
 import java.util.Set;
 
 /**
@@ -20,24 +18,21 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
     int eliteSize;
     int Q;
 
-
     Set<boolean[]> eliteSet;
     float u = 0;
-    float t;
     double Z;
-    int maxSizeTabuList = 20;
-    Set<boolean[]> neighborhoodSet = new HashSet<boolean[]>();
+
+    MaxCutWeightTabu localSearch;
 
     @Override
     public void calc() {
         float a1 = 0.2f, a2 = 0.4f;
         eliteSize = graph.getSize() * 2;
 
-        t = graph.getSize() / 2;
-
         int countTemperatureFaze = 50;
         Q = graph.getSize();
 
+        localSearch = new MaxCutWeightTabu(graph, 20, graph.getSize() / 2);
 
         eliteSet = eliteAssign();
         boolean[] p_best = new boolean[graph.getSize()];
@@ -46,12 +41,18 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         float m2 = a2 * graph.getSize();
         float m = m1;
 
+        float prevResult = 0;
         int maxn = graph.getSize() / 2;
         for (int i = 0; i < countTemperatureFaze; i++) {
+            float c_best = cutValue(p_best);
+            if (prevResult == c_best && i != 0) {
+                restart();
+            }
+            prevResult = c_best;
             for (int j = 0; j < maxn; j++) {
                 boolean[] p = chooseCandidate();
                 //mutation(p, m);
-                p = tabuSearch(p, p_best, t);
+                //p = tabuSearch(p, p_best, t);
                 eliteAdd(p);
                 if (cutValue(p) > cutValue(p_best)) {
                     p_best = p;
@@ -60,9 +61,21 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
             }
             tempRecalculation(i);
             m = m >= m2 ? m1 : m + 1;
-
         }
         res_mask = p_best;
+    }
+
+    private void restart() {
+        int index = rand.nextInt(eliteSet.size());
+        boolean[] maskFromSet = (boolean[]) eliteSet.toArray()[index];
+        float c = cutValue(maskFromSet);
+
+        for (Object o : eliteSet.toArray()) {
+            boolean[] mask = (boolean[]) o;
+            if (c > cutValue(mask)) {
+                eliteSet.remove(mask);
+            }
+        }
     }
 
 
@@ -80,56 +93,11 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
 
     }
 
-    private boolean[] tabuSearch(boolean[] mask, boolean[] mask_best, float t) {
-        float bestValue = cutValue(mask_best);
-        boolean[] sBest = mask;
-        LinkedList<boolean[]> tabuSet = new LinkedList<boolean[]>();
-        Set<boolean[]> candidateSet = new HashSet<boolean[]>();
-        for (int i = 0; i < t; i++) {
-            candidateSet.clear();
-
-            Set<boolean[]> neighborhoods = getNeighborhood(sBest);
-            for (boolean sCandidate[] : neighborhoods) {
-                if (!tabuSet.contains(sCandidate)) {
-                    candidateSet.add(sCandidate);
-                }
-            }
-            boolean[] sCandidate = LocateBestCandidate(candidateSet);
-
-            float sCandValue = cutValue(sCandidate);
-            if (sCandValue > bestValue) {
-                bestValue = sCandValue;
-                sBest = sCandidate;
-                tabuSet.add(sBest);
-                while (tabuSet.size() > maxSizeTabuList) {
-                    tabuSet.removeFirst();
-                }
-            }
-        }
-        return sBest;
-    }
-
-    boolean[] LocateBestCandidate(Set<boolean[]> set) {
-        boolean[] result = null;
-        float val = 0;
-        for (boolean[] mask : set) {
-            float c = cutValue(mask);
-            if (c > val) {
-                result = mask;
-                val = c;
-            }
-        }
-        return result;
-    }
-
-    Set<boolean[]> getNeighborhood(boolean[] mask) {
-        neighborhoodSet.clear();
-        for (int i = 0; i < mask.length; i++) {
-            boolean[] next = mask.clone();
-            next[i] = !next[i];
-            neighborhoodSet.add(next);
-        }
-        return neighborhoodSet;
+    private boolean[] tabuSearch(boolean[] mask, boolean[] mask_best) {
+        localSearch.setMask(mask);
+        localSearch.setMask_best(mask_best);
+        localSearch.calc();
+        return localSearch.getMask();
     }
 
     private void tempRecalculation(int step) {
@@ -160,8 +128,8 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         Z = 0;
         boolean[] p_best = new boolean[graph.getSize()];
         for (int i = 0; i < eliteSize; i++) {
-            boolean[] randSol = generateRandomSolution(graph.getSize());
-            randSol = tabuSearch(randSol, p_best, t);
+            boolean[] randSol = getRandomSolution(graph.getSize());
+//            randSol = tabuSearch(randSol, p_best, t);
             if (cutValue(randSol) > cutValue(p_best)) {
                 p_best = randSol;
             }
@@ -171,15 +139,6 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         return result;
     }
 
-    Random rand = new Random(System.nanoTime());
-
-    boolean[] generateRandomSolution(int n) {
-        boolean[] result = new boolean[n];
-        for (int i = 0; i < n; i++) {
-            result[i] = rand.nextBoolean();
-        }
-        return result;
-    }
 
     @Override
     public String getHumanID() {

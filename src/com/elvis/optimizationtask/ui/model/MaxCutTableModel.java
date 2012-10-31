@@ -46,6 +46,7 @@ public class MaxCutTableModel extends DefaultTableModel {
 
     public void clear() {
         maxCuts.clear();
+        fireTableDataChanged();
     }
 
     @Override

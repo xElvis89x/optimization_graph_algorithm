@@ -17,18 +17,18 @@ public class MaxCutBoolRandom extends MaxCutBoolAbstract {
 
     @Override
     public void calc() {
-        int n = simpleBooleanGraph.getSize();
+        int n = graph.getSize();
         res_mask = getRandomMask();
         int i, j;
         for (i = 0, res_maxcut = 0; i < n; i++) { //calculate cut value
             for (j = i + 1; j < n; j++) {
-                res_maxcut += (simpleBooleanGraph.getCell(i, j) && res_mask[i] != res_mask[j]) ? 1 : 0;
+                res_maxcut += (graph.getCell(i, j) && res_mask[i] != res_mask[j]) ? 1 : 0;
             }
         }
     }
 
     private boolean[] getRandomMask() {
-        boolean[] result = new boolean[simpleBooleanGraph.getSize()];
+        boolean[] result = new boolean[graph.getSize()];
         Random rand = new Random(System.nanoTime());
         for (int i = 0; i < result.length; i++) {
             result[i] = rand.nextBoolean();

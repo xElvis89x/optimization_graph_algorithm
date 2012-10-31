@@ -1,5 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.booleans;
 
+import com.elvis.model.Graph;
 import com.elvis.model.SimpleBooleanGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
 
@@ -11,12 +12,12 @@ import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
  */
 public abstract class MaxCutBoolAbstract extends MaxCutAbstract {
 
-    SimpleBooleanGraph simpleBooleanGraph;
-    long res_maxcut;
-    boolean[] res_mask;
+    protected SimpleBooleanGraph graph;
+    protected long res_maxcut;
+    protected boolean[] res_mask;
 
-    public MaxCutBoolAbstract(SimpleBooleanGraph simpleBooleanGraph) {
-        this.simpleBooleanGraph = simpleBooleanGraph;
+    public MaxCutBoolAbstract(SimpleBooleanGraph graph) {
+        this.graph = graph;
     }
 
     @Override
@@ -27,5 +28,10 @@ public abstract class MaxCutBoolAbstract extends MaxCutAbstract {
     @Override
     public boolean[] getMask() {
         return res_mask;
+    }
+
+    @Override
+    public Graph getGraph() {
+        return graph;
     }
 }

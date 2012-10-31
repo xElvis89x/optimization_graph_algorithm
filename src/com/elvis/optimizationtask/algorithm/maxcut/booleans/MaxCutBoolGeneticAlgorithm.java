@@ -32,8 +32,8 @@ public class MaxCutBoolGeneticAlgorithm extends MaxCutBoolAbstract {
 
     @Override
     public void calc() {
-        res_mask = new boolean[simpleBooleanGraph.getSize()];
-        int chromeSize = simpleBooleanGraph.getSize();
+        res_mask = new boolean[graph.getSize()];
+        int chromeSize = graph.getSize();
         int numEvolutions = chromeSize;
         double maxFitness = Math.pow(2.0, chromeSize) - 1;
 
@@ -71,10 +71,10 @@ public class MaxCutBoolGeneticAlgorithm extends MaxCutBoolAbstract {
     private class MaxCutFitness extends FitnessFunction {
         @Override
         protected double evaluate(IChromosome iChromosome) {
-            int i, j, cut = 0, n = simpleBooleanGraph.getSize();
+            int i, j, cut = 0, n = graph.getSize();
             for (i = 0; i < n; i++) { //calculate cut value
                 for (j = i + 1; j < n; j++) {
-                    cut += (simpleBooleanGraph.getCell(i, j) &&
+                    cut += (graph.getCell(i, j) &&
                             ((BooleanGene) iChromosome.getGene(i)).booleanValue() != ((BooleanGene) iChromosome.getGene(j)).booleanValue()) ? 1 : 0;
                 }
             }

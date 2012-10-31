@@ -19,6 +19,7 @@ public class Utils {
             try {
                 stream = new FileInputStream(file);
                 result = (SimpleWeightGraph) ParserManager.getGraphReader(stream).getGraphFromStream();
+                result.setFile(file);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {

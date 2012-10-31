@@ -2,8 +2,6 @@ package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
 import com.elvis.model.SimpleWeightGraph;
 
-import java.util.Random;
-
 /**
  * Created by User: el
  * Date: 09.10.12
@@ -41,7 +39,6 @@ public class MaxCutWeightLorena extends MaxCutWeightAbstract {
         double y[] = new double[n]; //values [0..2*pi]
 
         //init q[] with random numbers from [0..2*pi]
-        Random rand = new Random(System.nanoTime());
         for (k = 0; k < n; k++) {
             q[k] = rand.nextDouble() * Math.PI * 2;
         }

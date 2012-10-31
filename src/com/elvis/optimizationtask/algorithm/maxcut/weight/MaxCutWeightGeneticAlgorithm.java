@@ -49,6 +49,7 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
 
         for (int i = 0; i < numEvolutions; i++) {
             genotype.evolve();                // 1 step evolution
+            afterEvolveAction(genotype);
             if (percentEvolution > 0 && i % percentEvolution == 0) {
                 IChromosome fittest = genotype.getFittestChromosome();
                 double fitness = fittest.getFitnessValue();
@@ -68,6 +69,9 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
 
     }
 
+    protected void afterEvolveAction(Genotype genotype) {
+    }
+
     private class MaxCutFitness extends FitnessFunction {
         @Override
         protected double evaluate(IChromosome iChromosome) {
@@ -77,6 +81,10 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
                     cut += graph.getCell(i, j) *
                             (((BooleanGene) iChromosome.getGene(i)).booleanValue() != ((BooleanGene) iChromosome.getGene(j)).booleanValue() ? 1 : 0);
                 }
+            }
+            //TODO: crutch, fix it
+            if (cut < 0) {
+                cut = 0;
             }
             return cut;
         }

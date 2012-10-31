@@ -1,7 +1,10 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
+import com.elvis.model.Graph;
 import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
+
+import java.util.Random;
 
 /**
  * Created by User: el
@@ -9,12 +12,26 @@ import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
  * Time: 15:16
  */
 public abstract class MaxCutWeightAbstract extends MaxCutAbstract {
-    SimpleWeightGraph graph;
-    boolean[] res_mask;
-
+    protected SimpleWeightGraph graph;
+    protected boolean[] res_mask;
 
     public MaxCutWeightAbstract(SimpleWeightGraph graph) {
         this.graph = graph;
+    }
+
+    @Override
+    public Graph getGraph() {
+        return graph;
+    }
+
+    protected static Random rand = new Random(System.nanoTime());
+
+    protected static boolean[] getRandomSolution(int n) {
+        boolean[] result = new boolean[n];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = rand.nextBoolean();
+        }
+        return result;
     }
 
     @Override
