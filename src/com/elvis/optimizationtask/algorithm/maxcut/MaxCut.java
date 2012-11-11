@@ -1,6 +1,7 @@
 package com.elvis.optimizationtask.algorithm.maxcut;
 
 import com.elvis.model.Graph;
+import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.Algorithm;
 import com.elvis.optimizationtask.algorithm.TimeMark;
 
@@ -11,11 +12,13 @@ import com.elvis.optimizationtask.algorithm.TimeMark;
  */
 public interface MaxCut extends TimeMark, Algorithm {
 
-    public float getMaxCut();
+    public float getMaxCutValue();
 
     public boolean[] getMask();
 
     public Graph getGraph();
+
+    public void setGraph(SimpleWeightGraph graph);
 
 
 }

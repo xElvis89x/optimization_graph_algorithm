@@ -8,13 +8,16 @@ import com.elvis.model.SimpleWeightGraph;
  * Time: 1:35
  */
 public class MaxCutWeightRandom extends MaxCutWeightAbstract {
+    public MaxCutWeightRandom() {
+    }
+
     public MaxCutWeightRandom(SimpleWeightGraph graph) {
         super(graph);
     }
 
     @Override
     public void calc() {
-        res_mask = getRandomSolution(graph.getSize());
+        res_mask = getRandomSolution(graph.size());
     }
 
     @Override

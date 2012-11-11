@@ -11,6 +11,9 @@ public class MaxCutWeightLorena extends MaxCutWeightAbstract {
     private static final double EPSILON = 0.0001;
     private static final double INFINITY = 100000000;
 
+    public MaxCutWeightLorena() {
+    }
+
     public MaxCutWeightLorena(SimpleWeightGraph graph) {
         super(graph);
     }
@@ -28,7 +31,7 @@ public class MaxCutWeightLorena extends MaxCutWeightAbstract {
 
     @Override
     public void calc() {
-        int n = graph.getSize();
+        int n = graph.size();
 //        getMaxCutByLorena(graph.getMatrix(), graph.getSize());
 
         int i, j, k;

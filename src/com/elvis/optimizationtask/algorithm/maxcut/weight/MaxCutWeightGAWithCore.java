@@ -1,7 +1,6 @@
-package com.elvis.optimizationtask.algorithm.maxcut.weight.self;
+package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
 import com.elvis.model.SimpleWeightGraph;
-import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightGeneticAlgorithm;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
 import org.jgap.Population;
@@ -19,20 +18,41 @@ public class MaxCutWeightGAWithCore extends MaxCutWeightGeneticAlgorithm {
 
     @Override
     protected void afterEvolveAction(Genotype genotype) {
-        getCore(genotype);
+        //getCore(genotype.getPopulation());
     }
 
-    int[] coreMain = new int[graph.getSize()];
+    @Override
+    protected void endEvolveAction(Genotype genotype) {
+        int[] core = new int[graph.size()];
+        setValueForArray(core, -1);
+        for (int i = 0; i < graph.size(); i++) {
+            for (IChromosome iChromosome : genotype.getPopulation().getChromosomes()) {
+                BooleanGene bgene = (BooleanGene) iChromosome.getGene(i);
+                int r = bgene.booleanValue() ? 1 : 0;
+                if (core[i] == -1) {
+                    core[i] = r;
+                } else if (r != core[i]) {
+                    core[i] = 2;
+                }
+            }
+        }
+        for (int i : core) {
+            System.out.print(i + " ");
+        }
+        System.out.println(genotype.getFittestChromosome().getFitnessValue());
+
+    }
+
+    int[] coreMain = new int[graph.size()];
 
     {
         setValueForArray(coreMain, -1);
     }
 
-    void getCore(Genotype genotype) {
-        Population population = genotype.getPopulation();
-        int[] core = new int[graph.getSize()];
+    void getCore(Population population) {
+        int[] core = new int[graph.size()];
         setValueForArray(core, -1);
-        for (int i = 0; i < graph.getSize(); i++) {
+        for (int i = 0; i < graph.size(); i++) {
             for (IChromosome iChromosome : population.getChromosomes()) {
                 BooleanGene bgene = (BooleanGene) iChromosome.getGene(i);
                 int r = bgene.booleanValue() ? 1 : 0;
@@ -43,7 +63,7 @@ public class MaxCutWeightGAWithCore extends MaxCutWeightGeneticAlgorithm {
                 }
             }
         }
-        for (int i = 0; i < graph.getSize(); i++) {
+        for (int i = 0; i < graph.size(); i++) {
             if (coreMain[i] == -1) {
                 coreMain[i] = core[i];
             } else {

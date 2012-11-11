@@ -9,6 +9,8 @@ import com.elvis.model.SimpleWeightGraph;
  */
 
 public class MaxCutWeightBrutForce extends MaxCutWeightAbstract {
+    public MaxCutWeightBrutForce() {
+    }
 
     public MaxCutWeightBrutForce(SimpleWeightGraph graph) {
         super(graph);
@@ -16,7 +18,7 @@ public class MaxCutWeightBrutForce extends MaxCutWeightAbstract {
 
     @Override
     public void calc() {
-        int n = graph.getSize();
+        int n = graph.size();
         res_mask = new boolean[n];
         boolean mask[] = new boolean[n];
 
@@ -32,7 +34,8 @@ public class MaxCutWeightBrutForce extends MaxCutWeightAbstract {
     }
 
     static boolean nextPermutation(boolean[] m) {
-        for (int i = 0; i < m.length; i++) {
+        m[0] = false;
+        for (int i = 1; i < m.length; i++) {
             if (!m[i]) {
                 m[i] = true;
                 return true;
@@ -50,6 +53,6 @@ public class MaxCutWeightBrutForce extends MaxCutWeightAbstract {
 
     @Override
     public String getID() {
-        return "MCWBF";  //To change body of implemented methods use File | Settings | File Templates.
+        return "MCWBF";
     }
 }

@@ -11,6 +11,10 @@ import java.util.Set;
  * Time: 13:44
  */
 public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
+
+    public MaxCutWeightGlobalEquilibriumSearch() {
+    }
+
     public MaxCutWeightGlobalEquilibriumSearch(SimpleWeightGraph graph) {
         super(graph);
     }
@@ -27,22 +31,22 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
     @Override
     public void calc() {
         float a1 = 0.2f, a2 = 0.4f;
-        eliteSize = graph.getSize() * 2;
+        eliteSize = graph.size() * 2;
 
         int countTemperatureFaze = 50;
-        Q = graph.getSize();
+        Q = graph.size();
 
-        localSearch = new MaxCutWeightTabu(graph, 20, graph.getSize() / 2);
+        localSearch = new MaxCutWeightTabu(graph, 20, graph.size() / 2);
 
         eliteSet = eliteAssign();
-        boolean[] p_best = new boolean[graph.getSize()];
+        boolean[] p_best = new boolean[graph.size()];
         u = 0;
-        float m1 = a1 * graph.getSize();
-        float m2 = a2 * graph.getSize();
+        float m1 = a1 * graph.size();
+        float m2 = a2 * graph.size();
         float m = m1;
 
         float prevResult = 0;
-        int maxn = graph.getSize() / 2;
+        int maxn = graph.size() / 2;
         for (int i = 0; i < countTemperatureFaze; i++) {
             float c_best = cutValue(p_best);
             if (prevResult == c_best && i != 0) {
@@ -101,7 +105,7 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
     }
 
     private void tempRecalculation(int step) {
-        double coef = 1.8 * 100000000 / graph.getSize();
+        double coef = 1.8 * 100000000 / graph.size();
         if (step == 0) {
             u = (float) (0.0000007 / coef);
         } else {
@@ -126,9 +130,9 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
     private Set<boolean[]> eliteAssign() {
         Set<boolean[]> result = new HashSet<boolean[]>();
         Z = 0;
-        boolean[] p_best = new boolean[graph.getSize()];
+        boolean[] p_best = new boolean[graph.size()];
         for (int i = 0; i < eliteSize; i++) {
-            boolean[] randSol = getRandomSolution(graph.getSize());
+            boolean[] randSol = getRandomSolution(graph.size());
 //            randSol = tabuSearch(randSol, p_best, t);
             if (cutValue(randSol) > cutValue(p_best)) {
                 p_best = randSol;

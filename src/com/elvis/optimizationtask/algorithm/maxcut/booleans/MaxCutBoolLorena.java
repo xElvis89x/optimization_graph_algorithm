@@ -2,8 +2,6 @@ package com.elvis.optimizationtask.algorithm.maxcut.booleans;
 
 import com.elvis.model.SimpleBooleanGraph;
 
-import java.util.Random;
-
 /**
  * Created by User: el
  * Date: 02.10.12
@@ -29,7 +27,6 @@ public class MaxCutBoolLorena extends MaxCutBoolAbstract {
         double y[] = new double[n]; //values [0..2*pi]
 
         //init q[] with random numbers from [0..2*pi]
-        Random rand = new Random(System.nanoTime());
         for (k = 0; k < n; k++) {
             q[k] = rand.nextDouble() * Math.PI * 2;
         }

@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, IllegalAccessException, InstantiationException {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-config.xml");
-        GUIShell shell = ((GUIShell) context.getBean("main_controller"));
+        GUIShell shell = ((GUIShell) context.getBean("mainController"));
         shell.setVisible(true);
     }
 

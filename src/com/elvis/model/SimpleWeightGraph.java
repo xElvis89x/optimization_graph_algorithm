@@ -30,7 +30,7 @@ public class SimpleWeightGraph implements Graph {
         matrix[i][j] = value;
     }
 
-    public int getSize() {
+    public int size() {
         return matrix.length;
     }
 

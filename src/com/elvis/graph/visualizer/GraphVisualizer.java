@@ -81,7 +81,7 @@ public class GraphVisualizer {
                 while (true) {
                     if (System.currentTimeMillis() - time > 1000) {
                         time = System.currentTimeMillis();
-                        if (step < graph.getSize()) {
+                        if (step < graph.size()) {
                             Particle a = physics.makeParticle(10, rand.nextInt(100) - 50, rand.nextInt(100) - 50, 0);
                             particleIntegerMap.put(a, step);
                             for (int i = 0; i < step; i++) {

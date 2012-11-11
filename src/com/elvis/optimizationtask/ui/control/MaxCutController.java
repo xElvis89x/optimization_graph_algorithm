@@ -1,10 +1,11 @@
 package com.elvis.optimizationtask.ui.control;
 
-import com.elvis.GUIShell;
 import com.elvis.graph.visualizer.GraphVisualizer;
 import com.elvis.model.Graph;
 import com.elvis.model.SimpleWeightGraph;
+import com.elvis.optimizationtask.algorithm.Algorithm;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
+import com.elvis.optimizationtask.algorithm.maxcut.weight.*;
 import com.elvis.optimizationtask.export.ExcelExporter;
 import com.elvis.optimizationtask.ui.model.FileListModel;
 import com.elvis.optimizationtask.ui.model.MaxCutTableModel;
@@ -13,11 +14,11 @@ import com.elvis.optimizationtask.ui.view.MaxCutView;
 import org.springframework.beans.factory.InitializingBean;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Created by User: el
@@ -25,18 +26,9 @@ import java.io.*;
  * Time: 9:31
  * To change this template use File | Settings | File Templates.
  */
-public class MaxCutController implements InitializingBean, GUIShell {
-    public static final int WIDTH = 700;
-    public static final int HEIGHT = 500;
+public class MaxCutController extends AbstractController implements InitializingBean {
     private MaxCutTableModel tableModel;
-    private FileListModel listModel;
-    private File[] filesForCalc;
-
     private MaxCutView maxCutView;
-    private JFrame frame;
-    private JFileChooser fileChooser;
-    private AlgorithmCalculation algorithmCalculation;
-
 
     public MaxCutController() {
     }
@@ -45,31 +37,45 @@ public class MaxCutController implements InitializingBean, GUIShell {
         this.maxCutView = maxCutView;
     }
 
-    public void setFrame(JFrame frame) {
-        this.frame = frame;
-    }
-
-    public void setFileChooser(JFileChooser fileChooser) {
-        this.fileChooser = fileChooser;
-    }
-
     public void setTableModel(MaxCutTableModel tableModel) {
         this.tableModel = tableModel;
     }
 
-    public void setAlgorithmCalculation(AlgorithmCalculation algorithmCalculation) {
-        this.algorithmCalculation = algorithmCalculation;
-    }
-
-    public void setFilesForCalc(File[] filesForCalc) {
-        this.filesForCalc = filesForCalc;
-        for (File file : filesForCalc) {
-            listModel.addFile(file);
-        }
-    }
-
     public void init() {
-        initFrame();
+        algorithmCalculation.addListener(new AlgorithmCalculationAdapter() {
+            Color color;
+
+            @Override
+            public java.util.List<Algorithm> startSolving(Graph _graph) {
+                SimpleWeightGraph graph = (SimpleWeightGraph) _graph;
+                color = Utils.getRandomColor();
+                java.util.List<Algorithm> maxCutList = new ArrayList<Algorithm>();
+                if (maxCutView.getBruteForceMCCheckBox().isSelected()) {
+                    maxCutList.add(new MaxCutWeightBrutForce(graph));
+                }
+                if (maxCutView.getGeneticAlgorithmCheckBox().isSelected()) {
+                    maxCutList.add(new MaxCutWeightGeneticAlgorithm(graph));
+                }
+                if (maxCutView.getLorenaCheckBox().isSelected()) {
+                    maxCutList.add(new MaxCutWeightLorena(graph));
+                }
+                if (maxCutView.getRandomCheckBox().isSelected()) {
+                    maxCutList.add(new MaxCutWeightRandom(graph));
+                }
+                if (maxCutView.getGESCheckBox().isSelected()) {
+                    maxCutList.add(new MaxCutWeightGlobalEquilibriumSearch(graph));
+                }
+                if (maxCutView.getSelfGAWithCoreCheckBox().isSelected()) {
+                    maxCutList.add(new MaxCutWeightGAWithCore(graph));
+                }
+                return maxCutList;
+            }
+
+            @Override
+            public void solvedUse(Graph graph, Algorithm algorithm) {
+                tableModel.add((MaxCut) algorithm, color);
+            }
+        });
         maxCutView.getResultsTable().setModel(tableModel);
         MaxCutTableCellRenderer cellRenderer = new MaxCutTableCellRenderer();
         for (int i = 0; i < tableModel.getColumnCount(); i++) {
@@ -90,6 +96,7 @@ public class MaxCutController implements InitializingBean, GUIShell {
             @Override
             public void actionPerformed(ActionEvent e) {
                 algorithmCalculation.setFilesForCalc(filesForCalc);
+                tableModel.clear();
                 new Thread(algorithmCalculation).start();
             }
         });
@@ -142,51 +149,13 @@ public class MaxCutController implements InitializingBean, GUIShell {
         return result;
     }
 
-
-    private void initFrame() {
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setContentPane(maxCutView.getContentPane());
-        frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setBounds(new Rectangle((int) (screenSize.getWidth() / 2 - WIDTH / 2),
-                (int) (screenSize.getHeight() / 2 - HEIGHT / 2), WIDTH, HEIGHT));
-    }
-
-    public void setVisible(boolean visible) {
-        frame.pack();
-        frame.setVisible(visible);
-    }
-
-    private FileNameExtensionFilter xlsFilter = new FileNameExtensionFilter("Excel File", "xls");
-    private FileNameExtensionFilter graphFilter = new FileNameExtensionFilter("Graph file", "graph");
-
-    File getFileForSaveXLS() {
-        initFileChooser(xlsFilter, false);
-        fileChooser.showSaveDialog(frame);
-        File f = fileChooser.getSelectedFile();
-        if (f == null) return null;
-        if (!f.getName().endsWith(".xls"))
-            f = new File(f.getPath() + ".xls");
-        return f;
-    }
-
-    private File[] chooseFileWithGraph() {
-        initFileChooser(graphFilter, true);
-        fileChooser.showOpenDialog(frame);
-        return fileChooser.getSelectedFiles();
-    }
-
-    private void initFileChooser(FileNameExtensionFilter addFilter, Boolean multi) {
-        fileChooser.cancelSelection();
-        fileChooser.setSelectedFiles(null);
-        fileChooser.setCurrentDirectory(new File("."));
-        fileChooser.setMultiSelectionEnabled(multi);
-        fileChooser.resetChoosableFileFilters();
-        fileChooser.addChoosableFileFilter(addFilter);
-    }
-
     @Override
     public void afterPropertiesSet() throws Exception {
         init();
+    }
+
+    @Override
+    protected Component getComponent() {
+        return maxCutView.getContentPane();
     }
 }

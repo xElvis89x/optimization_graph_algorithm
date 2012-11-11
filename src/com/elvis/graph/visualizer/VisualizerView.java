@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -119,7 +120,7 @@ public class VisualizerView extends JPanel {
         }
     }
 
-    Map<Particle, Integer> particleIntegerMap;
+    Map<Particle, Integer> particleIntegerMap = new HashMap<Particle, Integer>();
 
     public void setParticleIntegerMap(Map<Particle, Integer> particleIntegerMap) {
         this.particleIntegerMap = particleIntegerMap;
@@ -142,7 +143,9 @@ public class VisualizerView extends JPanel {
             traer.physics.Spring e = physics.getSpring(i);
             Particle a = e.getOneEnd();
             Particle b = e.getTheOtherEnd();
-            if (MaxCutMask[particleIntegerMap.get(a)] != MaxCutMask[particleIntegerMap.get(b)]) {
+            int aInd = particleIntegerMap.get(a);
+            int bInd = particleIntegerMap.get(b);
+            if (MaxCutMask != null && MaxCutMask[aInd] != MaxCutMask[bInd]) {
                 g2.setColor(Color.RED);
             } else {
                 g2.setColor(Color.BLACK);
@@ -152,7 +155,7 @@ public class VisualizerView extends JPanel {
         for (int i = 0; i < physics.numberOfParticles(); ++i) {
             Particle v = physics.getParticle(i);
 
-            if (i != 0) {
+            if (i != 0 && MaxCutMask != null) {
                 g2.setColor(MaxCutMask[i - 1] ? Color.GREEN : Color.BLUE);
             } else {
                 g2.setColor(Color.RED);

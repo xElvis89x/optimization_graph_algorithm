@@ -3,36 +3,62 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="main_controller" class="com.elvis.optimizationtask.ui.control.MaxCutController">
-        <property name="tableModel" ref="resulttablemodel"/>
+    <bean id="mainView" class="com.elvis.optimizationtask.ui.view.MainView"/>
+    <bean id="mainController" class="com.elvis.optimizationtask.ui.control.MainController">
         <property name="frame" ref="frame"/>
-        <property name="maxCutView" ref="main_view"/>
-        <property name="fileChooser">
-            <bean class="javax.swing.JFileChooser">
-                <property name="acceptAllFileFilterUsed" value="false"/>
-            </bean>
+        <property name="view" ref="mainView"/>
+        <property name="tabPaneList">
+            <list>
+                <ref bean="maxCutView"/>
+                <ref bean="tspView"/>
+            </list>
         </property>
-        <property name="algorithmCalculation" ref="algorithmCalculation"/>
     </bean>
 
-    <bean id="main_view" class="com.elvis.optimizationtask.ui.view.MaxCutView"/>
 
+    <!--max cut part-->
+    <bean id="resultMaxCutTableModel" class="com.elvis.optimizationtask.ui.model.MaxCutTableModel"/>
+    <bean id="maxCutView" class="com.elvis.optimizationtask.ui.view.MaxCutView"/>
+
+    <bean id="maxCutController" class="com.elvis.optimizationtask.ui.control.MaxCutController">
+        <property name="tableModel" ref="resultMaxCutTableModel"/>
+        <property name="maxCutView" ref="maxCutView"/>
+        <property name="fileChooser" ref="fileChooser"/>
+        <property name="algorithmCalculation" ref="algorithmCalculationMaxCut"/>
+    </bean>
+    <bean id="algorithmCalculationMaxCut" class="com.elvis.optimizationtask.ui.control.AlgorithmCalculation">
+        <property name="progressUIHolder" ref="mainView"/>
+    </bean>
+
+    <!--TSP part-->
+
+    <bean id="resultTSPTableModel" class="com.elvis.optimizationtask.ui.model.TSPTableModel"/>
+    <bean id="tspView" class="com.elvis.optimizationtask.ui.view.TSPView"/>
+    <bean class="com.elvis.optimizationtask.ui.control.TSPController">
+        <property name="tspView" ref="tspView"/>
+        <property name="tableModel" ref="resultTSPTableModel"/>
+        <property name="fileChooser" ref="fileChooser"/>
+        <property name="algorithmCalculation" ref="algorithmCalculationTSP"/>
+    </bean>
+
+    <bean id="algorithmCalculationTSP" class="com.elvis.optimizationtask.ui.control.AlgorithmCalculation">
+        <property name="progressUIHolder" ref="mainView"/>
+    </bean>
+
+
+    <!--other-->
+    <bean id="fileChooser" class="javax.swing.JFileChooser">
+        <property name="acceptAllFileFilterUsed" value="false"/>
+    </bean>
     <bean id="frame" class="javax.swing.JFrame">
         <property name="title" value="Max Cut"/>
         <property name="JMenuBar" ref="menu"/>
     </bean>
-    <bean id="menu" class="javax.swing.JMenuBar"/>
 
+
+    <!--menu part-->
+    <bean id="menu" class="javax.swing.JMenuBar"/>
     <bean class="com.elvis.optimizationtask.ui.control.MenuController">
         <property name="menuBar" ref="menu"/>
     </bean>
-
-
-    <bean id="resulttablemodel" class="com.elvis.optimizationtask.ui.model.MaxCutTableModel"/>
-
-    <bean id="algorithmCalculation" class="com.elvis.optimizationtask.ui.control.AlgorithmCalculation">
-        <property name="maxCutView" ref="main_view"/>
-        <property name="tableModel" ref="resulttablemodel"/>
-    </bean>
-
 </beans>

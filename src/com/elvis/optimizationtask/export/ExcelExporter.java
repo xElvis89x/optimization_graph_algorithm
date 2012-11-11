@@ -90,7 +90,7 @@ public class ExcelExporter {
             timeCell.setCellValue(maxCut.getTimeExec());
 
             Cell cutCell = row.createCell(dataForWriting.algorithmIndex * countColumn + 2);
-            cutCell.setCellValue(maxCut.getMaxCut());
+            cutCell.setCellValue(maxCut.getMaxCutValue());
 
 
             Cell c = row.createCell(dataForWriting.algorithmIndex + shiftAdditionCalc);

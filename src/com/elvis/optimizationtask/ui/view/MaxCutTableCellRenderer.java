@@ -1,6 +1,7 @@
 package com.elvis.optimizationtask.ui.view;
 
 import com.elvis.optimizationtask.ui.model.MaxCutTableModel;
+import com.elvis.optimizationtask.ui.model.TSPTableModel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -15,7 +16,12 @@ public class MaxCutTableCellRenderer extends DefaultTableCellRenderer {
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        setBackground(((MaxCutTableModel) table.getModel()).getColor(row));
+        if (table.getModel() instanceof MaxCutTableModel) {
+            setBackground(((MaxCutTableModel) table.getModel()).getColor(row));
+        } else if (table.getModel() instanceof TSPTableModel) {
+            setBackground(((TSPTableModel) table.getModel()).getColor(row));
+
+        }
         return c;
     }
 }

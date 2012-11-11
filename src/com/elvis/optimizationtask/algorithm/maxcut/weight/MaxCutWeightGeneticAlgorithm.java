@@ -1,6 +1,7 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
 import com.elvis.model.SimpleWeightGraph;
+import com.elvis.optimizationtask.algorithm.maxcut.weight.ga.CustomChromosome;
 import org.jgap.*;
 import org.jgap.impl.BooleanGene;
 import org.jgap.impl.DefaultConfiguration;
@@ -12,11 +13,22 @@ import org.jgap.impl.DefaultConfiguration;
  */
 public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
     final static int populationSize = 20;
-    Configuration gaConf = new DefaultConfiguration();
+    Configuration gaConf;
 
+
+    public MaxCutWeightGeneticAlgorithm() {
+    }
 
     public MaxCutWeightGeneticAlgorithm(SimpleWeightGraph graph) {
         super(graph);
+    }
+
+    @Override
+    public void setGraph(SimpleWeightGraph graph) {
+        super.setGraph(graph);
+        if (gaConf == null) {
+            gaConf = new DefaultConfiguration();
+        }
         Configuration.reset();
         gaConf.setPreservFittestIndividual(true);
         gaConf.setKeepPopulationSizeConstant(true);
@@ -31,14 +43,14 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
 
     @Override
     public void calc() {
-        res_mask = new boolean[graph.getSize()];
-        int chromeSize = graph.getSize();
+        res_mask = new boolean[graph.size()];
+        int chromeSize = graph.size();
         int numEvolutions = chromeSize;
         double maxFitness = Math.pow(2.0, chromeSize) - 1;
 
         Genotype genotype;
         try {
-            IChromosome sampleChromosome = new Chromosome(gaConf, new BooleanGene(gaConf), chromeSize);
+            IChromosome sampleChromosome = new CustomChromosome(gaConf, new BooleanGene(gaConf), chromeSize);
             gaConf.setSampleChromosome(sampleChromosome);
             genotype = Genotype.randomInitialGenotype(gaConf);
         } catch (InvalidConfigurationException e) {
@@ -58,10 +70,9 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
                 }
             }
         }
+        endEvolveAction(genotype);
 
         IChromosome fittest = genotype.getFittestChromosome();
-
-        //res_maxcut = (long) fittest.getFitnessValue();
         int i = 0;
         for (Gene gene : fittest.getGenes()) {
             res_mask[i++] = ((BooleanGene) gene).booleanValue();
@@ -72,14 +83,18 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
     protected void afterEvolveAction(Genotype genotype) {
     }
 
+    protected void endEvolveAction(Genotype genotype) {
+    }
+
     private class MaxCutFitness extends FitnessFunction {
         @Override
         protected double evaluate(IChromosome iChromosome) {
-            int i, j, cut = 0, n = graph.getSize();
-            for (i = 0; i < n; i++) { //calculate cut value
-                for (j = i + 1; j < n; j++) {
-                    cut += graph.getCell(i, j) *
-                            (((BooleanGene) iChromosome.getGene(i)).booleanValue() != ((BooleanGene) iChromosome.getGene(j)).booleanValue() ? 1 : 0);
+            float cut = 0;
+            for (int i = 0; i < graph.size(); i++) { //calculate cut value
+                for (int j = i + 1; j < graph.size(); j++) {
+                    if (((BooleanGene) iChromosome.getGene(i)).booleanValue() != ((BooleanGene) iChromosome.getGene(j)).booleanValue()) {
+                        cut += graph.getCell(i, j);
+                    }
                 }
             }
             //TODO: crutch, fix it
@@ -93,7 +108,7 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
 
     @Override
     public String getHumanID() {
-        return "Max Cut Wieght Genetic Algorithm";
+        return "Max Cut Weight Genetic Algorithm";
     }
 
     @Override

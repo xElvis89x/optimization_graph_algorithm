@@ -2,6 +2,7 @@ package com.elvis.optimizationtask.algorithm.maxcut.booleans;
 
 import com.elvis.model.Graph;
 import com.elvis.model.SimpleBooleanGraph;
+import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
 
 /**
@@ -14,24 +15,23 @@ public abstract class MaxCutBoolAbstract extends MaxCutAbstract {
 
     protected SimpleBooleanGraph graph;
     protected long res_maxcut;
-    protected boolean[] res_mask;
 
     public MaxCutBoolAbstract(SimpleBooleanGraph graph) {
         this.graph = graph;
     }
 
     @Override
-    public float getMaxCut() {
+    public float getMaxCutValue() {
         return res_maxcut;
-    }
-
-    @Override
-    public boolean[] getMask() {
-        return res_mask;
     }
 
     @Override
     public Graph getGraph() {
         return graph;
+    }
+
+    @Override
+    public void setGraph(SimpleWeightGraph graph) {
+
     }
 }
