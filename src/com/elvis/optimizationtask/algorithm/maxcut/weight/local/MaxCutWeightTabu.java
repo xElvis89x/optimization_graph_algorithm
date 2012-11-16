@@ -1,6 +1,7 @@
-package com.elvis.optimizationtask.algorithm.maxcut.weight;
+package com.elvis.optimizationtask.algorithm.maxcut.weight.local;
 
 import com.elvis.model.SimpleWeightGraph;
+import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightAbstract;
 
 import java.util.HashSet;
 import java.util.LinkedList;

@@ -10,7 +10,7 @@ import java.util.List;
  * Date: 02.11.12
  * Time: 0:55
  */
-public class AlgorithmCalculationAdapter implements AlgorithmCalculationListener{
+public class AlgorithmCalculationAdapter implements AlgorithmCalculationListener {
     @Override
     public List<Algorithm> startSolving(Graph graph) {
         //To change body of implemented methods use File | Settings | File Templates.

@@ -149,7 +149,7 @@
           </component>
           <component id="aa95b" class="javax.swing.JCheckBox" binding="geneticAlgorithmCheckBox" default-binding="true">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Genetic Algorithm"/>
@@ -173,7 +173,7 @@
           </component>
           <component id="65b0d" class="javax.swing.JCheckBox" binding="GESCheckBox" default-binding="true">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="GES"/>
@@ -181,7 +181,7 @@
           </component>
           <component id="ce114" class="javax.swing.JCheckBox" binding="lorenaCheckBox" default-binding="true">
             <constraints>
-              <grid row="3" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Lorena"/>
@@ -189,7 +189,7 @@
           </component>
           <component id="fb3f4" class="javax.swing.JCheckBox" binding="randomCheckBox" default-binding="true">
             <constraints>
-              <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Random"/>
@@ -202,6 +202,14 @@
             <properties>
               <selected value="false"/>
               <text value="Self GA with Core"/>
+            </properties>
+          </component>
+          <component id="432a8" class="javax.swing.JCheckBox" binding="selfGAWithGreatestCheckBox" default-binding="true">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Self GA With Greatest"/>
             </properties>
           </component>
         </children>

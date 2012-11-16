@@ -68,6 +68,9 @@ public class MaxCutController extends AbstractController implements Initializing
                 if (maxCutView.getSelfGAWithCoreCheckBox().isSelected()) {
                     maxCutList.add(new MaxCutWeightGAWithCore(graph));
                 }
+                if (maxCutView.getSelfGAWithGreatestCheckBox().isSelected()) {
+                    maxCutList.add(new MaxCutWeightGAWithGreatest(graph));
+                }
                 return maxCutList;
             }
 

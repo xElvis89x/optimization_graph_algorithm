@@ -12,8 +12,8 @@ import org.jgap.impl.DefaultConfiguration;
  * Time: 18:59
  */
 public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
-    final static int populationSize = 20;
-    Configuration gaConf;
+    public final static int populationSize = 20;
+    protected Configuration gaConf;
 
 
     public MaxCutWeightGeneticAlgorithm() {
@@ -89,14 +89,7 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
     private class MaxCutFitness extends FitnessFunction {
         @Override
         protected double evaluate(IChromosome iChromosome) {
-            float cut = 0;
-            for (int i = 0; i < graph.size(); i++) { //calculate cut value
-                for (int j = i + 1; j < graph.size(); j++) {
-                    if (((BooleanGene) iChromosome.getGene(i)).booleanValue() != ((BooleanGene) iChromosome.getGene(j)).booleanValue()) {
-                        cut += graph.getCell(i, j);
-                    }
-                }
-            }
+            float cut = cutValue(iChromosome);
             //TODO: crutch, fix it
             if (cut < 0) {
                 cut = 0;
@@ -105,6 +98,17 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
         }
     }
 
+    public float cutValue(IChromosome chromosome) {
+        float cut = 0;
+        for (int i = 0; i < graph.size(); i++) { //calculate cut value
+            for (int j = i + 1; j < graph.size(); j++) {
+                if (((BooleanGene) chromosome.getGene(i)).booleanValue() != ((BooleanGene) chromosome.getGene(j)).booleanValue()) {
+                    cut += graph.getCell(i, j);
+                }
+            }
+        }
+        return cut;
+    }
 
     @Override
     public String getHumanID() {

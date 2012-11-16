@@ -1,6 +1,7 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
 import com.elvis.model.SimpleWeightGraph;
+import com.elvis.optimizationtask.algorithm.maxcut.weight.local.MaxCutWeightTabu;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -78,10 +79,18 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
             boolean[] mask = (boolean[]) o;
             if (c > cutValue(mask)) {
                 eliteSet.remove(mask);
+//                eliteRemove(mask);
             }
         }
     }
 
+    private void eliteRemove(boolean[] mask) {
+        float cv = cutValue(mask);
+        if (!eliteSet.contains(mask)) {
+            eliteSet.remove(mask);
+        }
+        Z = Z - Math.exp(-u * cv);
+    }
 
     private void eliteAdd(boolean[] mask/*, boolean[] mask_old*/) {
         //float cv_old = cutValue(mask_old);
