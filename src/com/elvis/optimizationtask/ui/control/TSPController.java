@@ -56,7 +56,7 @@ public class TSPController extends AbstractController implements InitializingBea
 
                 for (TSPDecompositionUIElement element : tspView.getList()) {
                     TSPWeightDecomposition alg = new TSPWeightDecomposition(graph);
-                    alg.setDecompositionAlgorithm(MaxCutWeightFactory.getMaxCutInstance(element.getMaxCutType()));
+                    alg.setDecompositionAlgorithm(MaxCutWeightFactory.getInstance().getMaxCutInstance(element.getMaxCutType().toString()));
                     alg.setTsp(TSPWeightFactory.getTSPInstance(element.getTSPType()));
                     maxCutList.add(alg);
                 }

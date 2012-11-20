@@ -91,7 +91,7 @@ public class MaxCutTableModel extends AbstractTableModel {
                 result = maxCuts.get(row).getMaxCutValue();
                 break;
             case 3:
-                result = OutputUtils.getBoolMaskPresentation(maxCuts.get(row).getMask());
+                result = OutputUtils.getBoolMaskPresentation(maxCuts.get(row).getResult());
                 break;
             case 4:
                 result = ((SimpleWeightGraph) maxCuts.get(row).getGraph()).getFile().getName();

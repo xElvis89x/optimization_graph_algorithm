@@ -30,7 +30,7 @@ public abstract class MaxCutAbstract implements MaxCut {
     }
 
     @Override
-    public boolean[] getMask() {
+    public boolean[] getResult() {
         return res_mask;
     }
 

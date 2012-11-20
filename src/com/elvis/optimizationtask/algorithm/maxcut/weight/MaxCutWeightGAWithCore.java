@@ -1,5 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
+import com.elvis.model.Graph;
 import com.elvis.model.SimpleWeightGraph;
 import org.jgap.Genotype;
 import org.jgap.IChromosome;
@@ -16,9 +17,19 @@ public class MaxCutWeightGAWithCore extends MaxCutWeightGeneticAlgorithm {
         super(graph);
     }
 
+    public MaxCutWeightGAWithCore() {
+    }
+
     @Override
     protected void afterEvolveAction(Genotype genotype) {
         //getCore(genotype.getPopulation());
+    }
+
+    @Override
+    public void setGraph(Graph graph) {
+        super.setGraph(graph);
+        coreMain = new int[this.graph.size()];
+        setValueForArray(coreMain, -1);
     }
 
     @Override
@@ -43,11 +54,7 @@ public class MaxCutWeightGAWithCore extends MaxCutWeightGeneticAlgorithm {
 
     }
 
-    int[] coreMain = new int[graph.size()];
-
-    {
-        setValueForArray(coreMain, -1);
-    }
+    int[] coreMain;
 
     void getCore(Population population) {
         int[] core = new int[graph.size()];
@@ -86,5 +93,15 @@ public class MaxCutWeightGAWithCore extends MaxCutWeightGeneticAlgorithm {
         for (int i = 0; i < array.length; i++) {
             array[i] = value;
         }
+    }
+
+    @Override
+    public String getHumanID() {
+        return "Max Cut Weight Genetic Algorithm + Cores";    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getID() {
+        return "MCWGA+C";    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

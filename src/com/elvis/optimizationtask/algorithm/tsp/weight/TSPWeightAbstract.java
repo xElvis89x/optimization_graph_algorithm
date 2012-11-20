@@ -1,5 +1,6 @@
 package com.elvis.optimizationtask.algorithm.tsp.weight;
 
+import com.elvis.model.Graph;
 import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.tsp.TSPAbstract;
 
@@ -18,12 +19,12 @@ public abstract class TSPWeightAbstract extends TSPAbstract {
     protected TSPWeightAbstract() {
     }
 
-    public SimpleWeightGraph getGraph() {
+    public Graph getGraph() {
         return graph;
     }
 
-    public void setGraph(SimpleWeightGraph graph) {
-        this.graph = graph;
+    public void setGraph(Graph graph) {
+        this.graph = (SimpleWeightGraph) graph;
     }
 
     @Override

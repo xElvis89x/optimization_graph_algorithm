@@ -1,5 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
+import com.elvis.model.Graph;
 import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.weight.ga.CustomChromosome;
 import org.jgap.*;
@@ -24,7 +25,7 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
     }
 
     @Override
-    public void setGraph(SimpleWeightGraph graph) {
+    public void setGraph(Graph graph) {
         super.setGraph(graph);
         if (gaConf == null) {
             gaConf = new DefaultConfiguration();
@@ -45,9 +46,6 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
     public void calc() {
         res_mask = new boolean[graph.size()];
         int chromeSize = graph.size();
-        int numEvolutions = chromeSize;
-        double maxFitness = Math.pow(2.0, chromeSize) - 1;
-
         Genotype genotype;
         try {
             IChromosome sampleChromosome = new CustomChromosome(gaConf, new BooleanGene(gaConf), chromeSize);
@@ -57,33 +55,28 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
             e.printStackTrace();
             return;
         }
-        int percentEvolution = numEvolutions / 100;
 
-        for (int i = 0; i < numEvolutions; i++) {
+        for (int i = 0; i < chromeSize; i++) {
             genotype.evolve();                // 1 step evolution
             afterEvolveAction(genotype);
-            if (percentEvolution > 0 && i % percentEvolution == 0) {
-                IChromosome fittest = genotype.getFittestChromosome();
-                double fitness = fittest.getFitnessValue();
-                if (fitness >= maxFitness) {
-                    break;
-                }
-            }
         }
         endEvolveAction(genotype);
+    }
 
-        IChromosome fittest = genotype.getFittestChromosome();
+    protected boolean[] convertChromosomeToArray(IChromosome chromosome) {
         int i = 0;
-        for (Gene gene : fittest.getGenes()) {
-            res_mask[i++] = ((BooleanGene) gene).booleanValue();
+        boolean[] result = new boolean[chromosome.getGenes().length];
+        for (Gene gene : chromosome.getGenes()) {
+            result[i++] = ((BooleanGene) gene).booleanValue();
         }
-
+        return result;
     }
 
     protected void afterEvolveAction(Genotype genotype) {
     }
 
     protected void endEvolveAction(Genotype genotype) {
+        res_mask = convertChromosomeToArray(genotype.getFittestChromosome());
     }
 
     private class MaxCutFitness extends FitnessFunction {

@@ -9,6 +9,7 @@ import com.elvis.model.SimpleWeightGraph;
  */
 
 public class MaxCutWeightBrutForce extends MaxCutWeightAbstract {
+
     public MaxCutWeightBrutForce() {
     }
 

@@ -13,21 +13,90 @@ import java.util.Map;
  * Time: 13:37
  */
 public class MaxCutWeightFactory {
-    private static Map<MaxCutType, MaxCut> maxCutMap = new HashMap<MaxCutType, MaxCut>() {
+
+    private static MaxCutWeightFactory INSTANCE = new MaxCutWeightFactory();
+
+    public static MaxCutWeightFactory getInstance() {
+        return INSTANCE;
+    }
+
+    private Map<String, MaxCutCreator> maxCutMap = new HashMap<String, MaxCutCreator>() {
         {
-            put(MaxCutType.BRUTE_FORCE, new MaxCutWeightBrutForce());
-            put(MaxCutType.GA, new MaxCutWeightGeneticAlgorithm());
-            put(MaxCutType.GES, new MaxCutWeightGlobalEquilibriumSearch());
-            put(MaxCutType.LORENA, new MaxCutWeightLorena());
-            put(MaxCutType.RANDOM, new MaxCutWeightRandom());
+            MaxCutCreator[] maxCut = {
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightBrutForce();
+                        }
+                    }
+                    ,
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightGeneticAlgorithm();
+                        }
+                    }
+                    ,
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightGlobalEquilibriumSearch();
+                        }
+                    }
+                    ,
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightLorena();
+                        }
+                    }
+                    ,
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightRandom();
+                        }
+                    }
+                    ,
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightNodeGreedy();
+                        }
+                    }
+                    ,
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightGAWithCore();
+                        }
+                    }
+                    ,
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightGAWithGreedy();
+                        }
+                    }
+            };
+
+            for (MaxCutCreator cut : maxCut) {
+                MaxCut c = cut.create();
+                put(c.getHumanID(), cut);
+            }
         }
     };
 
-    public static List<MaxCutType> getMaxCutList() {
-        return new ArrayList<MaxCutType>(maxCutMap.keySet());
+    public List<String> getMaxCutList() {
+        return new ArrayList<String>(maxCutMap.keySet());
     }
 
-    public static MaxCut getMaxCutInstance(MaxCutType type) {
-        return maxCutMap.get(type);
+    public MaxCut getMaxCutInstance(String type) {
+        return maxCutMap.get(type).create();
+    }
+
+    interface MaxCutCreator {
+        MaxCut create();
     }
 }
+

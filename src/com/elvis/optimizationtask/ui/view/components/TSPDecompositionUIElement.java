@@ -21,7 +21,7 @@ public class TSPDecompositionUIElement {
     private JPanel contentPane;
 
     public TSPDecompositionUIElement() {
-        for (MaxCutType maxCutType : MaxCutWeightFactory.getMaxCutList()) {
+        for (String maxCutType : MaxCutWeightFactory.getInstance().getMaxCutList()) {
             this.maxCutType.addItem(maxCutType);
         }
         for (TSPType tspType : TSPWeightFactory.getTSPList()) {

@@ -1,7 +1,6 @@
 package com.elvis.optimizationtask.algorithm.tsp;
 
 import com.elvis.model.Graph;
-import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.Algorithm;
 import com.elvis.optimizationtask.algorithm.TimeMark;
 
@@ -17,6 +16,6 @@ public interface TSP extends TimeMark, Algorithm {
 
     public Graph getGraph();
 
-    public void setGraph(SimpleWeightGraph graph);
+    public void setGraph(Graph graph);
 
 }

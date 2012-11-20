@@ -35,7 +35,7 @@ public class TSPWeightDecomposition extends TSPWeightAbstract {
 
         decompositionAlgorithm.setGraph(graph);
         decompositionAlgorithm.solve();
-        boolean[] mask = decompositionAlgorithm.getMask();
+        boolean[] mask = decompositionAlgorithm.getResult();
         List<Integer> graphDec1 = new ArrayList<Integer>(); // array node index
         List<Integer> graphDec2 = new ArrayList<Integer>();
         for (int i = 0; i < mask.length; i++) {

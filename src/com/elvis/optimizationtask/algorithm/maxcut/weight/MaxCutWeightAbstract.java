@@ -19,8 +19,8 @@ public abstract class MaxCutWeightAbstract extends MaxCutAbstract {
     protected MaxCutWeightAbstract() {
     }
 
-    public void setGraph(SimpleWeightGraph graph) {
-        this.graph = graph;
+    public void setGraph(Graph graph) {
+        this.graph = (SimpleWeightGraph) graph;
     }
 
     @Override

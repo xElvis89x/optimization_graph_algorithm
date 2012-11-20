@@ -1,5 +1,7 @@
 package com.elvis.optimizationtask.ui.view;
 
+import com.elvis.optimizationtask.algorithm.maxcut.MaxCutWeightFactory;
+import com.elvis.optimizationtask.ui.model.CheckBoxTableModel;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -8,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,73 +26,35 @@ public class MaxCutView implements ContentProvider {
     private JButton excelExport;
     private JButton visualizeGraphButton;
     private JList fileList;
-    private JCheckBox bruteForceMCCheckBox;
-    private JCheckBox geneticAlgorithmCheckBox;
-    private JCheckBox lorenaCheckBox;
-    private JCheckBox randomCheckBox;
-    private JCheckBox GESCheckBox;
     private JButton selectAllButton;
     private JButton inverseButton;
-    private JCheckBox selfGAWithCoreCheckBox;
-    private JCheckBox selfGAWithGreatestCheckBox;
+    private JTable checkBoxTable;
 
-    private List<JCheckBox> checkBoxMCList = new ArrayList<JCheckBox>() {
-        {
-            add(bruteForceMCCheckBox);
-            add(geneticAlgorithmCheckBox);
-            add(lorenaCheckBox);
-            add(randomCheckBox);
-            add(GESCheckBox);
-            add(selfGAWithCoreCheckBox);
-            add(selfGAWithGreatestCheckBox);
-        }
-    };
+    public List<String> getListAlgorithm() {
+        return checkBoxTableModel.getAlgorithmsList();
+    }
+
+    private CheckBoxTableModel checkBoxTableModel;
 
     public MaxCutView() {
+        checkBoxTableModel = new CheckBoxTableModel();
+        checkBoxTable.setModel(checkBoxTableModel);
+        checkBoxTable.getColumnModel().getColumn(0).setMaxWidth(50);
+        for (String maxCutType : MaxCutWeightFactory.getInstance().getMaxCutList()) {
+            checkBoxTableModel.addMaxCutAlgorithm(maxCutType);
+        }
         selectAllButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (JCheckBox jCheckBox : checkBoxMCList) {
-                    jCheckBox.setSelected(true);
-                }
+                checkBoxTableModel.SelectAll();
             }
         });
         inverseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                for (JCheckBox jCheckBox : checkBoxMCList) {
-                    jCheckBox.setSelected(!jCheckBox.isSelected());
-                }
+                checkBoxTableModel.Inverse();
             }
         });
-    }
-
-    public JCheckBox getSelfGAWithGreatestCheckBox() {
-        return selfGAWithGreatestCheckBox;
-    }
-
-    public JCheckBox getBruteForceMCCheckBox() {
-        return bruteForceMCCheckBox;
-    }
-
-    public JCheckBox getGeneticAlgorithmCheckBox() {
-        return geneticAlgorithmCheckBox;
-    }
-
-    public JCheckBox getLorenaCheckBox() {
-        return lorenaCheckBox;
-    }
-
-    public JCheckBox getRandomCheckBox() {
-        return randomCheckBox;
-    }
-
-    public JCheckBox getGESCheckBox() {
-        return GESCheckBox;
-    }
-
-    public JCheckBox getSelfGAWithCoreCheckBox() {
-        return selfGAWithCoreCheckBox;
     }
 
     public JButton getVisualizeGraphButton() {
@@ -186,37 +149,23 @@ public class MaxCutView implements ContentProvider {
         final Spacer spacer3 = new Spacer();
         panel4.add(spacer3, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final JPanel panel5 = new JPanel();
-        panel5.setLayout(new GridLayoutManager(5, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel5.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        panel5.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black), null));
-        bruteForceMCCheckBox = new JCheckBox();
-        bruteForceMCCheckBox.setText("Brute Force");
-        panel5.add(bruteForceMCCheckBox, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        geneticAlgorithmCheckBox = new JCheckBox();
-        geneticAlgorithmCheckBox.setText("Genetic Algorithm");
-        panel5.add(geneticAlgorithmCheckBox, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JScrollPane scrollPane3 = new JScrollPane();
+        panel5.add(scrollPane3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        checkBoxTable = new JTable();
+        scrollPane3.setViewportView(checkBoxTable);
+        final JPanel panel6 = new JPanel();
+        panel6.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel5.add(panel6, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         selectAllButton = new JButton();
         selectAllButton.setText("Select All");
-        panel5.add(selectAllButton, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel6.add(selectAllButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer4 = new Spacer();
+        panel6.add(spacer4, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         inverseButton = new JButton();
         inverseButton.setText("Inverse");
-        panel5.add(inverseButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        GESCheckBox = new JCheckBox();
-        GESCheckBox.setText("GES");
-        panel5.add(GESCheckBox, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        lorenaCheckBox = new JCheckBox();
-        lorenaCheckBox.setText("Lorena");
-        panel5.add(lorenaCheckBox, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        randomCheckBox = new JCheckBox();
-        randomCheckBox.setText("Random");
-        panel5.add(randomCheckBox, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        selfGAWithCoreCheckBox = new JCheckBox();
-        selfGAWithCoreCheckBox.setSelected(false);
-        selfGAWithCoreCheckBox.setText("Self GA with Core");
-        panel5.add(selfGAWithCoreCheckBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        selfGAWithGreatestCheckBox = new JCheckBox();
-        selfGAWithGreatestCheckBox.setText("Self GA With Greatest");
-        panel5.add(selfGAWithGreatestCheckBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel6.add(inverseButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

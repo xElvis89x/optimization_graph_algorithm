@@ -5,7 +5,7 @@ import com.elvis.model.Graph;
 import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.Algorithm;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
-import com.elvis.optimizationtask.algorithm.maxcut.weight.*;
+import com.elvis.optimizationtask.algorithm.maxcut.MaxCutWeightFactory;
 import com.elvis.optimizationtask.export.ExcelExporter;
 import com.elvis.optimizationtask.ui.model.FileListModel;
 import com.elvis.optimizationtask.ui.model.MaxCutTableModel;
@@ -50,26 +50,10 @@ public class MaxCutController extends AbstractController implements Initializing
                 SimpleWeightGraph graph = (SimpleWeightGraph) _graph;
                 color = Utils.getRandomColor();
                 java.util.List<Algorithm> maxCutList = new ArrayList<Algorithm>();
-                if (maxCutView.getBruteForceMCCheckBox().isSelected()) {
-                    maxCutList.add(new MaxCutWeightBrutForce(graph));
-                }
-                if (maxCutView.getGeneticAlgorithmCheckBox().isSelected()) {
-                    maxCutList.add(new MaxCutWeightGeneticAlgorithm(graph));
-                }
-                if (maxCutView.getLorenaCheckBox().isSelected()) {
-                    maxCutList.add(new MaxCutWeightLorena(graph));
-                }
-                if (maxCutView.getRandomCheckBox().isSelected()) {
-                    maxCutList.add(new MaxCutWeightRandom(graph));
-                }
-                if (maxCutView.getGESCheckBox().isSelected()) {
-                    maxCutList.add(new MaxCutWeightGlobalEquilibriumSearch(graph));
-                }
-                if (maxCutView.getSelfGAWithCoreCheckBox().isSelected()) {
-                    maxCutList.add(new MaxCutWeightGAWithCore(graph));
-                }
-                if (maxCutView.getSelfGAWithGreatestCheckBox().isSelected()) {
-                    maxCutList.add(new MaxCutWeightGAWithGreatest(graph));
+                for (String maxCutType : maxCutView.getListAlgorithm()) {
+                    MaxCut maxCut = MaxCutWeightFactory.getInstance().getMaxCutInstance(maxCutType);
+                    maxCut.setGraph(graph);
+                    maxCutList.add(maxCut);
                 }
                 return maxCutList;
             }
@@ -135,7 +119,7 @@ public class MaxCutController extends AbstractController implements Initializing
                 if (index >= 0 && index < listModel.getSize()) {
                     SimpleWeightGraph graph = Utils.getGraph(listModel.get(index));
                     GraphVisualizer visualizer = new GraphVisualizer(graph);
-                    visualizer.setMaxCutMask(getMaxCutForGraph(graph).getMask());
+                    visualizer.setMaxCutMask(getMaxCutForGraph(graph).getResult());
                     visualizer.start();
                 }
             }

@@ -6,5 +6,5 @@ package com.elvis.optimizationtask.algorithm.maxcut;
  * Time: 13:42
  */
 public enum MaxCutType {
-    BRUTE_FORCE, GA, GES, LORENA, RANDOM
+    BRUTE_FORCE, GA, GES, LORENA, RANDOM,
 }

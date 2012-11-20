@@ -63,7 +63,7 @@ public class ExcelExporter {
         Collections.sort(maxCuts, new Comparator<MaxCut>() {
             @Override
             public int compare(MaxCut o1, MaxCut o2) {
-                return o1.getMask().length - o2.getMask().length;
+                return o1.getResult().length - o2.getResult().length;
             }
         });
 
@@ -84,7 +84,7 @@ public class ExcelExporter {
             Row row = r.get(dataForWriting.lastRow);
             if (row == null) {
                 r.put(dataForWriting.lastRow, row = sheet.createRow(dataForWriting.lastRow));
-                row.createCell(0).setCellValue(maxCut.getMask().length);
+                row.createCell(0).setCellValue(maxCut.getResult().length);
             }
             Cell timeCell = row.createCell(dataForWriting.algorithmIndex * countColumn + 1);
             timeCell.setCellValue(maxCut.getTimeExec());
@@ -98,12 +98,12 @@ public class ExcelExporter {
                     + "-"
                     + new CellReference(cutCell).formatAsString());
 
-            if (additionalRowData.size() == 0 || additionalRowData.getLast().nodeCount != maxCut.getMask().length) {
+            if (additionalRowData.size() == 0 || additionalRowData.getLast().nodeCount != maxCut.getResult().length) {
                 if (additionalRowData.size() != 0) {
                     additionalRowData.getLast().rowEnd = dataForWriting.lastRow - 1;
                 }
                 AdditionalRowInfo data = new AdditionalRowInfo();
-                data.nodeCount = maxCut.getMask().length;
+                data.nodeCount = maxCut.getResult().length;
                 data.rowStart = dataForWriting.lastRow;
                 additionalRowData.add(data);
             }

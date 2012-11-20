@@ -110,7 +110,7 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         localSearch.setMask(mask);
         localSearch.setMask_best(mask_best);
         localSearch.calc();
-        return localSearch.getMask();
+        return localSearch.getResult();
     }
 
     private void tempRecalculation(int step) {

@@ -2,7 +2,6 @@ package com.elvis.optimizationtask.algorithm.maxcut.booleans;
 
 import com.elvis.model.Graph;
 import com.elvis.model.SimpleBooleanGraph;
-import com.elvis.model.SimpleWeightGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
 
 /**
@@ -31,7 +30,7 @@ public abstract class MaxCutBoolAbstract extends MaxCutAbstract {
     }
 
     @Override
-    public void setGraph(SimpleWeightGraph graph) {
+    public void setGraph(Graph graph) {
 
     }
 }
