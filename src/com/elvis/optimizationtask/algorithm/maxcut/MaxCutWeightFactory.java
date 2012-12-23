@@ -28,50 +28,79 @@ public class MaxCutWeightFactory {
                         public MaxCut create() {
                             return new MaxCutWeightBrutForce();
                         }
-                    }
-                    ,
+                    },
                     new MaxCutCreator() {
                         @Override
                         public MaxCut create() {
                             return new MaxCutWeightGeneticAlgorithm();
                         }
-                    }
-                    ,
+                    },
                     new MaxCutCreator() {
                         @Override
                         public MaxCut create() {
                             return new MaxCutWeightGlobalEquilibriumSearch();
                         }
-                    }
-                    ,
+                    },
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightGlobalEquilibriumSearchWithTabu();
+                        }
+                    },
                     new MaxCutCreator() {
                         @Override
                         public MaxCut create() {
                             return new MaxCutWeightLorena();
                         }
-                    }
-                    ,
+                    },
                     new MaxCutCreator() {
                         @Override
                         public MaxCut create() {
                             return new MaxCutWeightRandom();
                         }
-                    }
-                    ,
+                    },
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightKaporisKirousisStavropoulos();
+                        }
+                    },
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightPathRelinking();
+                        }
+                    },
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightGreedy();
+                        }
+                    },
                     new MaxCutCreator() {
                         @Override
                         public MaxCut create() {
                             return new MaxCutWeightNodeGreedy();
                         }
-                    }
-                    ,
+                    },
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightNodeGreedyMod1();
+                        }
+                    },
                     new MaxCutCreator() {
                         @Override
                         public MaxCut create() {
                             return new MaxCutWeightGAWithCore();
                         }
-                    }
-                    ,
+                    },
+                    new MaxCutCreator() {
+                        @Override
+                        public MaxCut create() {
+                            return new MaxCutWeightGAWithTabu();
+                        }
+                    },
                     new MaxCutCreator() {
                         @Override
                         public MaxCut create() {

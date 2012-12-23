@@ -5,12 +5,10 @@ import com.elvis.model.SimpleWeightGraph;
 
 /**
  * Created by User: el
- * Date: 08.11.12
- * Time: 13:54
- * Rule Of Dirac. If all node of graph have more then graph size divide on 2 then graph have hamilton cycle
+ * Date: 14.12.12
+ * Time: 13:26
  */
-public class RuleOfDirac implements Rule {
-
+public class RuleOneEdge implements Rule {
     @Override
     public boolean check(Graph graph) {
         SimpleWeightGraph g = (SimpleWeightGraph) graph;
@@ -21,7 +19,7 @@ public class RuleOfDirac implements Rule {
                     count++;
                 }
             }
-            if (count < g.size() / 2) {
+            if (count <= 1) {
                 return false;
             }
         }
@@ -30,6 +28,6 @@ public class RuleOfDirac implements Rule {
 
     @Override
     public String id() {
-        return "dirac_rule";
+        return "rule_one_edge";
     }
 }

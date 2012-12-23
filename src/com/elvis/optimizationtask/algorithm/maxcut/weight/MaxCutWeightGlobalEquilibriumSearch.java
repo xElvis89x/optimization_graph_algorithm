@@ -37,8 +37,6 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         int countTemperatureFaze = 50;
         Q = graph.size();
 
-        localSearch = new MaxCutWeightTabu(graph, 20, graph.size() / 2);
-
         eliteSet = eliteAssign();
         boolean[] p_best = new boolean[graph.size()];
         u = 0;
@@ -57,7 +55,7 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
             for (int j = 0; j < maxn; j++) {
                 boolean[] p = chooseCandidate();
                 //mutation(p, m);
-                //p = tabuSearch(p, p_best, t);
+                p = localSearch(p, p_best);
                 eliteAdd(p);
                 if (cutValue(p) > cutValue(p_best)) {
                     p_best = p;
@@ -106,11 +104,16 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
 
     }
 
-    private boolean[] tabuSearch(boolean[] mask, boolean[] mask_best) {
-        localSearch.setMask(mask);
-        localSearch.setMask_best(mask_best);
-        localSearch.calc();
-        return localSearch.getResult();
+    private boolean[] localSearch(boolean[] mask, boolean[] mask_best) {
+        if (localSearch != null) {
+            localSearch.setMask(mask);
+            localSearch.setMask_best(mask_best);
+            localSearch.calc();
+
+            return localSearch.getResult();
+        } else {
+            return mask;
+        }
     }
 
     private void tempRecalculation(int step) {

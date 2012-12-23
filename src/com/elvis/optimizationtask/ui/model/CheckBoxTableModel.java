@@ -12,14 +12,16 @@ import java.util.Map;
  * Time: 13:33
  */
 public class CheckBoxTableModel extends DefaultTableModel {
+    List<String> algList = new ArrayList<String>();
+    HashMap<String, Boolean> checkBoxMap = new HashMap<String, Boolean>();
+    HashMap<String, Integer> repeatCountMap = new HashMap<String, Integer>();
 
-    HashMap<String, Boolean> checkBoxMap = new HashMap<String, java.lang.Boolean>();
 
     public List<String> getAlgorithmsList() {
         List<String> maxCutTypes = new ArrayList<String>();
-        for (Map.Entry<String, Boolean> stringBooleanEntry : checkBoxMap.entrySet()) {
-            if (stringBooleanEntry.getValue()) {
-                maxCutTypes.add(stringBooleanEntry.getKey());
+        for (String algName : algList) {
+            if (checkBoxMap.get(algName)) {
+                maxCutTypes.add(algName);
             }
         }
         return maxCutTypes;
@@ -38,21 +40,25 @@ public class CheckBoxTableModel extends DefaultTableModel {
     }
 
     public void addMaxCutAlgorithm(String alg) {
+        algList.add(alg);
         checkBoxMap.put(alg, false);
+        repeatCountMap.put(alg, 1);
         fireTableDataChanged();
     }
 
+    Class<?>[] columnClass = {Boolean.class, String.class, Integer.class};
+
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return columnIndex == 0 ? Boolean.class : super.getColumnClass(columnIndex);
+        return columnClass[columnIndex];
     }
 
     @Override
     public boolean isCellEditable(int row, int column) {
-        return column == 0 || super.isCellEditable(row, column);
+        return column == 0 || column == 2 || super.isCellEditable(row, column);
     }
 
-    String[] columnName = {"Check", "Algorithm Name"};
+    String[] columnName = {"Check", "Algorithm Name", "Repeat Count"};
 
     @Override
     public String getColumnName(int column) {
@@ -61,7 +67,7 @@ public class CheckBoxTableModel extends DefaultTableModel {
 
     @Override
     public int getColumnCount() {
-        return 2;
+        return columnName.length;
     }
 
     @Override
@@ -72,19 +78,24 @@ public class CheckBoxTableModel extends DefaultTableModel {
     @Override
     public Object getValueAt(int row, int column) {
         if (column == 0) {
-            return checkBoxMap.get(checkBoxMap.keySet().toArray()[row]);
+            return checkBoxMap.get(algList.get(row));
+        } else if (column == 1) {
+            return algList.get(row);
         } else {
-            return checkBoxMap.keySet().toArray()[row];
+            return repeatCountMap.get(algList.get(row));
         }
     }
 
     @Override
     public void setValueAt(Object aValue, int row, int column) {
         if (column == 0) {
-            checkBoxMap.put(checkBoxMap.keySet().toArray()[row].toString(), (Boolean) aValue);
+            checkBoxMap.put(algList.get(row), (Boolean) aValue);
             fireTableCellUpdated(row, column);
         }
-
+        if (column == 2) {
+            repeatCountMap.put(algList.get(row), (Integer) aValue);
+            fireTableCellUpdated(row, column);
+        }
     }
 }
 

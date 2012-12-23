@@ -20,7 +20,16 @@ public class MaxCutWeightNodeGreedyMod1 extends MaxCutWeightNodeGreedy {
             } else {
                 res_mask[integer] = !currentFlag;
             }
-
         }
+    }
+
+    @Override
+    public String getHumanID() {
+        return super.getHumanID() + "Mod1";
+    }
+
+    @Override
+    public String getID() {
+        return super.getID() + "M1";
     }
 }

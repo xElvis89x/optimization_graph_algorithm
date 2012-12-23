@@ -9,4 +9,6 @@ import com.elvis.model.Graph;
  */
 public interface Rule {
     public boolean check(Graph graph);
+
+    public String id();
 }

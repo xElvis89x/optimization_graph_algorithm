@@ -88,9 +88,20 @@ public class DownloadDialog extends JDialog {
                 }
 
                 System.out.println(link);
-                URL url = new URL(linkToPage + link);
 
-                OutputStream outputStream = new FileOutputStream(dirFoSave.getPath() + "/" + link);
+
+                String s = linkToPage.substring(0, linkToPage.lastIndexOf('/') + 1);
+                URL url = new URL(s + link);
+
+
+                String l = link;
+                int ind = Math.max(link.lastIndexOf('\\'), link.lastIndexOf('/'));
+                if (ind != -1) {
+                    l = l.substring(ind);
+                }
+
+                File f = new File(dirFoSave.getPath() + "/" + l);
+                OutputStream outputStream = new FileOutputStream(f);
                 InputStream inputStream = url.openStream();
                 byte readByte[] = new byte[1024];
                 int count = 0;
@@ -105,11 +116,14 @@ public class DownloadDialog extends JDialog {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } catch (IOException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
 
     private void getListLink(String linkToPage, List<String> linkList) {
+        System.out.println("------Start Get List Link  link=" + linkToPage + "------");
         try {
             URL url = new URL(linkToPage);
             InputStream stream = url.openStream();
@@ -129,6 +143,7 @@ public class DownloadDialog extends JDialog {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("------End Get List Link  link=" + linkToPage + "------");
     }
 
     private void onCancel() {
