@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.tsp.weight;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 
 /**
  * Created by User: el
@@ -8,8 +8,8 @@ import com.elvis.model.SimpleWeightGraph;
  * Time: 16:29
  */
 public class TSPWeightBruteForce extends TSPWeightAbstract {
-    public TSPWeightBruteForce(SimpleWeightGraph graph) {
-        super(graph);
+    public TSPWeightBruteForce(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
     }
 
     public TSPWeightBruteForce() {

@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight.local;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightAbstract;
 
 import java.util.HashSet;
@@ -13,8 +13,8 @@ import java.util.Set;
  * Time: 20:41
  */
 public class MaxCutWeightTabu extends MaxCutWeightAbstract {
-    public MaxCutWeightTabu(SimpleWeightGraph graph, int tabuListSize, int cycleCount) {
-        super(graph);
+    public MaxCutWeightTabu(SimpleWeightFloatGraph floatGraph, int tabuListSize, int cycleCount) {
+        super(floatGraph);
         this.cycleCount = cycleCount;
         this.maxSizeTabuList = tabuListSize;
     }
@@ -49,13 +49,15 @@ public class MaxCutWeightTabu extends MaxCutWeightAbstract {
             }
             boolean[] sCandidate = LocateBestCandidate(candidateSet);
 
-            float sCandValue = cutValue(sCandidate);
-            if (sCandValue > bestValue) {
-                bestValue = sCandValue;
-                res_mask = sCandidate;
-                tabuSet.add(res_mask);
-                while (tabuSet.size() > maxSizeTabuList) {
-                    tabuSet.removeFirst();
+            if (sCandidate != null) {
+                float sCandValue = cutValue(sCandidate);
+                if (sCandValue > bestValue) {
+                    bestValue = sCandValue;
+                    res_mask = sCandidate;
+                    tabuSet.add(res_mask);
+                    while (tabuSet.size() > maxSizeTabuList) {
+                        tabuSet.removeFirst();
+                    }
                 }
             }
         }

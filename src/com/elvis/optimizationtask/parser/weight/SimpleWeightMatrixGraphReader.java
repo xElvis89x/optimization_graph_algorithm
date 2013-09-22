@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.parser.weight;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.parser.AbstractGraphReader;
 
 import java.util.Scanner;
@@ -10,21 +10,21 @@ import java.util.Scanner;
  * Date: 12.10.12
  * Time: 1:25
  */
-public class SimpleWeightMatrixGraphReader extends AbstractGraphReader<SimpleWeightGraph> {
+public class SimpleWeightMatrixGraphReader extends AbstractGraphReader<SimpleWeightFloatGraph> {
     @Override
-    public SimpleWeightGraph getGraphFromStream() {
-        SimpleWeightGraph simpleWeightGraph = new SimpleWeightGraph();
+    public SimpleWeightFloatGraph getGraphFromStream() {
+        SimpleWeightFloatGraph simpleWeightFloatGraph = new SimpleWeightFloatGraph();
 
         Scanner scanner = new Scanner(inputStream);
 
         int size = scanner.nextInt(); //read matrix size from stream
-        simpleWeightGraph.create(size);
+        simpleWeightFloatGraph.create(size);
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 //bug with scanner.nextFloat, not understand number with point (example: 10.0)
-                simpleWeightGraph.setCell(i, j, Float.parseFloat(scanner.next()));
+                simpleWeightFloatGraph.setCell(i, j, Float.parseFloat(scanner.next()));
             }
         }
-        return simpleWeightGraph;
+        return simpleWeightFloatGraph;
     }
 }

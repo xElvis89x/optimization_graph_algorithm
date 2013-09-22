@@ -1,8 +1,10 @@
-package com.elvis.graph.generator;
+package com.elvis.graph.generator.planar;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,17 +12,18 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Created by User: el
- * Date: 12.10.12
- * Time: 0:37
+ * Created with IntelliJ IDEA.
+ * User: el
+ * Date: 20.06.13
+ * Time: 20:31
+ * To change this template use File | Settings | File Templates.
  */
-public class GeneratorController {
-
-    private GeneratorView view;
+public class PlanarGraphGeneratorController {
+    private PlanarGeneratorView view;
     private File directoryForSave;
     private Random rand = new Random(System.nanoTime());
 
-    public GeneratorController(GeneratorView view) {
+    public PlanarGraphGeneratorController(PlanarGeneratorView view) {
         this.view = view;
     }
 
@@ -45,20 +48,15 @@ public class GeneratorController {
     }
 
 
-
     private void generateAndSaveGraph() {
         int count = (Integer) view.getSpinnerCount().getValue();
         int size = (Integer) view.getSpinnerSize().getValue();
+        int width = (Integer) view.getSpinnerWidth().getValue();
         for (int i = 0; i < count; i++) {
-            Generator generator = null;
-            if (view.getGraphTypeComboBox().getSelectedItem() == "Float") {
-                generator = new GeneratorFloat(size);
-            } else if (view.getGraphTypeComboBox().getSelectedItem() == "Integer") {
-                generator = new GeneratorInt(size);
-            }
+            PlanarGenerator generator = new PlanarGenerator(size, width);
             FileOutputStream outputStream = null;
             try {
-                Object[][] matrix = generator.generate();
+                float[][] matrix = generator.generate();
                 String path = directoryForSave.getAbsolutePath() + "\\testS" + size + "_" + Arrays.deepHashCode(matrix) + ".graph";
                 System.out.println(path);
                 writeToStream(size, generator.getType(), matrix, outputStream = new FileOutputStream(path));
@@ -73,7 +71,7 @@ public class GeneratorController {
         }
     }
 
-    private void writeToStream(int size, String type, Object[][] matrix, FileOutputStream outputStream) throws IOException {
+    private void writeToStream(int size, String type, float[][] matrix, FileOutputStream outputStream) throws IOException {
         outputStream.write((type + "\n").getBytes());
         outputStream.write((size + "\n").getBytes());
         for (int k = 0; k < size; k++) {
@@ -84,61 +82,69 @@ public class GeneratorController {
         }
     }
 
-    class Generator<T> {
+    class PlanarGenerator {
         public static final int maxEdgeLength = 100;
-        int size;
+        private int size;
+        private int width;
 
-        public Generator(int size) {
+        public PlanarGenerator(int size, int width) {
             this.size = size;
+            this.width = width;
         }
 
-        private T[][] generate() {
-            int q = rand.nextInt(size - 2) + 2;
-            T[][] matrix = create(size);
+
+        private float[][] generate() {
+            int q = rand.nextInt(size) + 2;
+            float[][] matrix = create(size);
+
+            Point[] planarPoints = new Point[size];
+            for (int i = 0; i < size; i++) {
+                planarPoints[i] = new Point(rand.nextInt(width), rand.nextInt(width));
+            }
+
             for (int k = 0; k < size; k++) {
-                matrix[k][k] = Null();
                 for (int j = k + 1; j < size; j++) {
-                    matrix[k][j] = matrix[j][k] = rand.nextInt(q) == 0 ? Null() : Rand();
+                    if (rand.nextInt(q) != 0) {
+                        if (!isHaveIntersect(matrix, planarPoints, k, j)) {
+                            matrix[j][k] = matrix[k][j] = (float) planarPoints[k].distance(planarPoints[j]);
+                        } else {
+                            matrix[j][k] = matrix[k][j] = 0;
+                        }
+                    }else {
+                        matrix[j][k] = matrix[k][j] = 0;
+                    }
                 }
             }
             return matrix;
         }
 
-        protected T Null() {
-            return null;
+        private boolean isHaveIntersect(float[][] martix, Point[] planarPoints, int q, int w) {
+            Line2D.Float line1 = new Line2D.Float(planarPoints[q], planarPoints[w]);
+            for (int k = 0; k < size; k++) {
+                for (int j = k + 1; j < size; j++) {
+                    if (martix[k][j] != 0) {
+                        if (q != k && w != j && q != j && w != k) {
+                            Line2D.Float line2 = new Line2D.Float(planarPoints[k], planarPoints[j]);
+                            if (line1.intersectsLine(line2)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
         }
 
-        protected T Rand() {
-            return null;
+        protected int Null() {
+            return 0;
         }
 
-        protected T[][] create(int size) {
-            return null;
+        protected int Rand() {
+            return rand.nextInt(maxEdgeLength);
         }
 
-        String getType() {
-            return "";
-        }
-    }
-
-    class GeneratorFloat extends Generator<Float> {
-        GeneratorFloat(int size) {
-            super(size);
-        }
-
-        @Override
-        protected Float Null() {
-            return 0f;
-        }
-
-        @Override
-        protected Float[][] create(int size) {
-            return new Float[size][size];
-        }
-
-        @Override
-        protected Float Rand() {
-            return rand.nextFloat() * maxEdgeLength;
+        protected float[][] create(int size) {
+            return new float[size][size];
         }
 
         String getType() {
@@ -146,30 +152,4 @@ public class GeneratorController {
         }
     }
 
-    class GeneratorInt extends Generator<Integer> {
-        GeneratorInt(int size) {
-            super(size);
-        }
-
-        @Override
-        protected Integer Null() {
-            return 0;
-        }
-
-        @Override
-        protected Integer[][] create(int size) {
-            return new Integer[size][size];
-        }
-
-        @Override
-        protected Integer Rand() {
-            return rand.nextInt(maxEdgeLength);
-        }
-
-        String getType() {
-            return "mi";
-        }
-    }
-
 }
-

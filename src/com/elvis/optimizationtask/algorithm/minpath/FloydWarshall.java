@@ -1,7 +1,7 @@
 package com.elvis.optimizationtask.algorithm.minpath;
 
 import com.elvis.model.Graph;
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 
 /**
  * Created by User: el
@@ -9,21 +9,21 @@ import com.elvis.model.SimpleWeightGraph;
  * Time: 12:06
  */
 public class FloydWarshall implements MinPath {
-    SimpleWeightGraph graph;
+    SimpleWeightFloatGraph floatGraph;
 
-    SimpleWeightGraph result;
+    SimpleWeightFloatGraph result;
 
     @Override
     public void solve() {
-        result = graph;
-        for (int k = 0; k < graph.size(); k++) {
-            SimpleWeightGraph graph1 = result;
-            result = new SimpleWeightGraph();
-            result.create(graph.size());
-            for (int i = 1; i < graph.size(); k++) {
-                for (int j = i + 1; j < graph.size(); k++) {
-                    if (graph1.getCell(i, k) != 0 && graph1.getCell(j, k) != 0) {
-                        float r = Math.min(graph1.getCell(i, j), graph1.getCell(i, k) + graph1.getCell(j, k));
+        result = floatGraph;
+        for (int k = 0; k < floatGraph.size(); k++) {
+            SimpleWeightFloatGraph floatGraph1 = result;
+            result = new SimpleWeightFloatGraph();
+            result.create(floatGraph.size());
+            for (int i = 1; i < floatGraph.size(); k++) {
+                for (int j = i + 1; j < floatGraph.size(); k++) {
+                    if (floatGraph1.getCell(i, k) != 0 && floatGraph1.getCell(j, k) != 0) {
+                        float r = Math.min(floatGraph1.getCell(i, j), floatGraph1.getCell(i, k) + floatGraph1.getCell(j, k));
                         result.setCell(i, j, r);
                         result.setCell(j, i, r);
                     }
@@ -43,13 +43,13 @@ public class FloydWarshall implements MinPath {
     }
 
     @Override
-    public void setGraph(Graph graph) {
-        this.graph = (SimpleWeightGraph) graph;
+    public void setFloatGraph(Graph floatGraph) {
+        this.floatGraph = (SimpleWeightFloatGraph) floatGraph;
     }
 
     @Override
-    public Graph getGraph() {
-        return graph;
+    public Graph getFloatGraph() {
+        return floatGraph;
     }
 
     @Override

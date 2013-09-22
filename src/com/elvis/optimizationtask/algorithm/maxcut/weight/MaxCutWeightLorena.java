@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 
 /**
  * Created by User: el
@@ -14,8 +14,8 @@ public class MaxCutWeightLorena extends MaxCutWeightAbstract {
     public MaxCutWeightLorena() {
     }
 
-    public MaxCutWeightLorena(SimpleWeightGraph graph) {
-        super(graph);
+    public MaxCutWeightLorena(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
     }
 
 //    {

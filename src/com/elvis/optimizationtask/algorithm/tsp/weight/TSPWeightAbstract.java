@@ -1,7 +1,7 @@
 package com.elvis.optimizationtask.algorithm.tsp.weight;
 
 import com.elvis.model.Graph;
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.tsp.TSPAbstract;
 
 /**
@@ -10,9 +10,9 @@ import com.elvis.optimizationtask.algorithm.tsp.TSPAbstract;
  * Time: 16:29
  */
 public abstract class TSPWeightAbstract extends TSPAbstract {
-    protected SimpleWeightGraph graph;
+    protected SimpleWeightFloatGraph graph;
 
-    protected TSPWeightAbstract(SimpleWeightGraph graph) {
+    protected TSPWeightAbstract(SimpleWeightFloatGraph graph) {
         this.graph = graph;
     }
 
@@ -24,7 +24,7 @@ public abstract class TSPWeightAbstract extends TSPAbstract {
     }
 
     public void setGraph(Graph graph) {
-        this.graph = (SimpleWeightGraph) graph;
+        this.graph = (SimpleWeightFloatGraph) graph;
     }
 
     @Override

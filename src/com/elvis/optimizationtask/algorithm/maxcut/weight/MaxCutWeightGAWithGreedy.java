@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.weight.local.MaxCutWeightGreedy;
 import org.jgap.Genotype;
 
@@ -13,8 +13,8 @@ public class MaxCutWeightGAWithGreedy extends MaxCutWeightGeneticAlgorithm {
     public MaxCutWeightGAWithGreedy() {
     }
 
-    public MaxCutWeightGAWithGreedy(SimpleWeightGraph graph) {
-        super(graph);
+    public MaxCutWeightGAWithGreedy(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
     }
 
     MaxCutWeightGreedy greedy = new MaxCutWeightGreedy();

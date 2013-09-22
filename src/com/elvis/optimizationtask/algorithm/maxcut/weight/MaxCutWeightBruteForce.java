@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 
 /**
  * Created by User: el
@@ -8,12 +8,12 @@ import com.elvis.model.SimpleWeightGraph;
  * Time: 15:31
  */
 
-public class MaxCutWeightBrutForce extends MaxCutWeightAbstract {
+public class MaxCutWeightBruteForce extends MaxCutWeightAbstract {
 
-    public MaxCutWeightBrutForce() {
+    public MaxCutWeightBruteForce() {
     }
 
-    public MaxCutWeightBrutForce(SimpleWeightGraph graph) {
+    public MaxCutWeightBruteForce(SimpleWeightFloatGraph graph) {
         super(graph);
     }
 
@@ -49,7 +49,7 @@ public class MaxCutWeightBrutForce extends MaxCutWeightAbstract {
 
     @Override
     public String getHumanID() {
-        return "Max Cut Weight Brut Forse";
+        return "Max Cut Weight Brute Force";
     }
 
     @Override

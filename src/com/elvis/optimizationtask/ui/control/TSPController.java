@@ -1,8 +1,8 @@
 package com.elvis.optimizationtask.ui.control;
 
-import com.elvis.graph.visualizer.GraphVisualizer;
+import com.elvis.graph.visualizer.phisics.GraphVisualizer;
 import com.elvis.model.Graph;
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.Algorithm;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCutWeightFactory;
 import com.elvis.optimizationtask.algorithm.tsp.TSP;
@@ -47,15 +47,15 @@ public class TSPController extends AbstractController implements InitializingBea
 
             @Override
             public List<Algorithm> startSolving(Graph _graph) {
-                SimpleWeightGraph graph = (SimpleWeightGraph) _graph;
+                SimpleWeightFloatGraph floatGraph = (SimpleWeightFloatGraph) _graph;
                 color = Utils.getRandomColor();
                 java.util.List<Algorithm> maxCutList = new ArrayList<Algorithm>();
                 if (tspView.getBruteForceCheckBox().isSelected()) {
-                    maxCutList.add(new TSPWeightBruteForce(graph));
+                    maxCutList.add(new TSPWeightBruteForce(floatGraph));
                 }
 
                 for (TSPDecompositionUIElement element : tspView.getList()) {
-                    TSPWeightDecomposition alg = new TSPWeightDecomposition(graph);
+                    TSPWeightDecomposition alg = new TSPWeightDecomposition(floatGraph);
                     alg.setDecompositionAlgorithm(MaxCutWeightFactory.getInstance().getMaxCutInstance(element.getMaxCutType().toString()));
                     alg.setTsp(TSPWeightFactory.getTSPInstance(element.getTSPType()));
                     maxCutList.add(alg);
@@ -122,8 +122,8 @@ public class TSPController extends AbstractController implements InitializingBea
             public void actionPerformed(ActionEvent e) {
                 int index = tspView.getFileList().getSelectedIndex();
                 if (index >= 0 && index < listModel.getSize()) {
-                    SimpleWeightGraph graph = Utils.getGraph(listModel.get(index));
-                    GraphVisualizer visualizer = new GraphVisualizer(graph);
+                    SimpleWeightFloatGraph floatGraph = Utils.getGraph(listModel.get(index));
+                    GraphVisualizer visualizer = new GraphVisualizer(floatGraph);
 //                    visualizer.setMaxCutMask(getMaxCutForGraph(graph).getMask());
                     visualizer.start();
                 }

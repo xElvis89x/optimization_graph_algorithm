@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,8 +15,8 @@ import java.util.List;
  * сумму весов ребер исходящих из этой вершины
  */
 public class MaxCutWeightNodeGreedy extends MaxCutWeightAbstract {
-    public MaxCutWeightNodeGreedy(SimpleWeightGraph graph) {
-        super(graph);
+    public MaxCutWeightNodeGreedy(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
     }
 
     public MaxCutWeightNodeGreedy() {

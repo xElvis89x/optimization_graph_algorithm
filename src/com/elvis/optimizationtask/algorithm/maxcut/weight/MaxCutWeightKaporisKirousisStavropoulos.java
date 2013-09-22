@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 
 /**
  * Created by User: el
@@ -9,8 +9,8 @@ import com.elvis.model.SimpleWeightGraph;
  */
 public class MaxCutWeightKaporisKirousisStavropoulos extends MaxCutWeightAbstract {
 
-    public MaxCutWeightKaporisKirousisStavropoulos(SimpleWeightGraph graph) {
-        super(graph);
+    public MaxCutWeightKaporisKirousisStavropoulos(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
     }
 
     public MaxCutWeightKaporisKirousisStavropoulos() {
@@ -41,8 +41,10 @@ public class MaxCutWeightKaporisKirousisStavropoulos extends MaxCutWeightAbstrac
                     }
                 }
             }
-            if (v != -1 && v < result.length)
-                result[v] = (short) (-Math.signum(d));
+            if (v != -1 && v < result.length) {
+                result[v] = (short) (d > 0 ? -1 : 1);
+            }
+
         }
         res_mask = new boolean[graph.size()];
         for (int i = 0; i < graph.size(); i++) {

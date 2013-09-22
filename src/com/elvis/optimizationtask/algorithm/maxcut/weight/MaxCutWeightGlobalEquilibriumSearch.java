@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.weight.local.MaxCutWeightTabu;
 
 import java.util.HashSet;
@@ -16,8 +16,8 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
     public MaxCutWeightGlobalEquilibriumSearch() {
     }
 
-    public MaxCutWeightGlobalEquilibriumSearch(SimpleWeightGraph graph) {
-        super(graph);
+    public MaxCutWeightGlobalEquilibriumSearch(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
     }
 
     int eliteSize;
@@ -76,8 +76,7 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         for (Object o : eliteSet.toArray()) {
             boolean[] mask = (boolean[]) o;
             if (c > cutValue(mask)) {
-                eliteSet.remove(mask);
-//                eliteRemove(mask);
+                eliteRemove(mask);
             }
         }
     }
@@ -145,7 +144,7 @@ public class MaxCutWeightGlobalEquilibriumSearch extends MaxCutWeightAbstract {
         boolean[] p_best = new boolean[graph.size()];
         for (int i = 0; i < eliteSize; i++) {
             boolean[] randSol = getRandomSolution(graph.size());
-//            randSol = tabuSearch(randSol, p_best, t);
+            localSearch(randSol, p_best);
             if (cutValue(randSol) > cutValue(p_best)) {
                 p_best = randSol;
             }

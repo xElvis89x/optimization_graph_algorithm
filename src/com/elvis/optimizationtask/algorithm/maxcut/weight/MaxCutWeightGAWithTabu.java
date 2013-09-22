@@ -23,7 +23,7 @@ public class MaxCutWeightGAWithTabu extends MaxCutWeightGeneticAlgorithm {
 
     @Override
     public String getHumanID() {
-        return super.getHumanID() + " With Tabu";
+        return super.getHumanID() + " + Tabu";
     }
 
     @Override

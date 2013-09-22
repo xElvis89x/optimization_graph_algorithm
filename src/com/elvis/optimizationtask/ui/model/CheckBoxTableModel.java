@@ -27,16 +27,25 @@ public class CheckBoxTableModel extends DefaultTableModel {
         return maxCutTypes;
     }
 
+    public void SelectNone() {
+        for (Map.Entry<String, Boolean> stringBooleanEntry : checkBoxMap.entrySet()) {
+            stringBooleanEntry.setValue(false);
+        }
+        fireTableDataChanged();
+    }
+
     public void SelectAll() {
         for (Map.Entry<String, Boolean> stringBooleanEntry : checkBoxMap.entrySet()) {
             stringBooleanEntry.setValue(true);
         }
+        fireTableDataChanged();
     }
 
     public void Inverse() {
         for (Map.Entry<String, Boolean> stringBooleanEntry : checkBoxMap.entrySet()) {
             stringBooleanEntry.setValue(!stringBooleanEntry.getValue());
         }
+        fireTableDataChanged();
     }
 
     public void addMaxCutAlgorithm(String alg) {

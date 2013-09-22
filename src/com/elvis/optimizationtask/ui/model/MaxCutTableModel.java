@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.ui.model;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleAbstractGraph;
 import com.elvis.optimizationtask.OutputUtils;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
 
@@ -94,7 +94,8 @@ public class MaxCutTableModel extends AbstractTableModel {
                 result = OutputUtils.getBoolMaskPresentation(maxCuts.get(row).getResult());
                 break;
             case 4:
-                result = ((SimpleWeightGraph) maxCuts.get(row).getGraph()).getFile().getName();
+                if (maxCuts.get(row).getGraph() != null)
+                    result = ((SimpleAbstractGraph) maxCuts.get(row).getGraph()).getFile().getName();
 
         }
         return result;

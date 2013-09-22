@@ -19,7 +19,7 @@ import java.util.*;
  * Time: 0:24
  */
 public class ExcelExporter {
-    public static final int shiftAdditionCalc = 15;
+    public static final int shiftAdditionCalc = 50;
     private List<MaxCut> maxCuts;
 
     public ExcelExporter(List<MaxCut> list) {

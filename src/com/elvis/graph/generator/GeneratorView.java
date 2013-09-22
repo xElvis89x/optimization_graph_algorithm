@@ -16,6 +16,18 @@ public class GeneratorView {
     private JSpinner spinnerSize;
     private JPanel contentPane;
     private JSpinner spinnerCount;
+    private JComboBox graphTypeComboBox;
+
+    public GeneratorView() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) graphTypeComboBox.getModel();
+        model.addElement("Boolean");
+        model.addElement("Integer");
+        model.addElement("Float");
+    }
+
+    public JComboBox getGraphTypeComboBox() {
+        return graphTypeComboBox;
+    }
 
     public JButton getGenerateButton() {
         return generateButton;
@@ -79,6 +91,8 @@ public class GeneratorView {
         generateButton = new JButton();
         generateButton.setText("Generate");
         contentPane.add(generateButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        graphTypeComboBox = new JComboBox();
+        contentPane.add(graphTypeComboBox, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

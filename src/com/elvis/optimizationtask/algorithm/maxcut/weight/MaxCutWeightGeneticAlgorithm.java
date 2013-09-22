@@ -1,7 +1,7 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
 import com.elvis.model.Graph;
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.weight.ga.CustomChromosome;
 import org.jgap.*;
 import org.jgap.impl.BooleanGene;
@@ -20,8 +20,8 @@ public class MaxCutWeightGeneticAlgorithm extends MaxCutWeightAbstract {
     public MaxCutWeightGeneticAlgorithm() {
     }
 
-    public MaxCutWeightGeneticAlgorithm(SimpleWeightGraph graph) {
-        super(graph);
+    public MaxCutWeightGeneticAlgorithm(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
     }
 
     @Override

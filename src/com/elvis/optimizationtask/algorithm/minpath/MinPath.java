@@ -9,9 +9,9 @@ import com.elvis.optimizationtask.algorithm.Algorithm;
  * Time: 12:09
  */
 public interface MinPath extends Algorithm {
-    public void setGraph(Graph graph);
+    public void setFloatGraph(Graph graph);
 
-    public Graph getGraph();
+    public Graph getFloatGraph();
 
     public Graph getResult();
 }

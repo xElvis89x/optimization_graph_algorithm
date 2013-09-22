@@ -3,7 +3,7 @@ package com.elvis.optimizationtask.algorithm.maxcut;
 import com.elvis.optimizationtask.algorithm.maxcut.weight.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,13 +20,13 @@ public class MaxCutWeightFactory {
         return INSTANCE;
     }
 
-    private Map<String, MaxCutCreator> maxCutMap = new HashMap<String, MaxCutCreator>() {
+    private Map<String, MaxCutCreator> maxCutMap = new LinkedHashMap<String, MaxCutCreator>() {
         {
             MaxCutCreator[] maxCut = {
                     new MaxCutCreator() {
                         @Override
                         public MaxCut create() {
-                            return new MaxCutWeightBrutForce();
+                            return new MaxCutWeightBruteForce();
                         }
                     },
                     new MaxCutCreator() {

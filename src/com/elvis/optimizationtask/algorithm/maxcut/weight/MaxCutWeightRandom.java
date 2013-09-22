@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 
 /**
  * Created by User: el
@@ -11,8 +11,8 @@ public class MaxCutWeightRandom extends MaxCutWeightAbstract {
     public MaxCutWeightRandom() {
     }
 
-    public MaxCutWeightRandom(SimpleWeightGraph graph) {
-        super(graph);
+    public MaxCutWeightRandom(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
     }
 
     @Override

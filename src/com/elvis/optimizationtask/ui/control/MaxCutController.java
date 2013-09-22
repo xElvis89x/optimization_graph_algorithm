@@ -1,8 +1,8 @@
 package com.elvis.optimizationtask.ui.control;
 
-import com.elvis.graph.visualizer.GraphVisualizer;
+import com.elvis.graph.visualizer.phisics.GraphVisualizer;
 import com.elvis.model.Graph;
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.Algorithm;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCutWeightFactory;
@@ -47,12 +47,12 @@ public class MaxCutController extends AbstractController implements Initializing
 
             @Override
             public java.util.List<Algorithm> startSolving(Graph _graph) {
-                SimpleWeightGraph graph = (SimpleWeightGraph) _graph;
+                SimpleWeightFloatGraph floatGraph = (SimpleWeightFloatGraph) _graph;
                 color = Utils.getRandomColor();
                 java.util.List<Algorithm> maxCutList = new ArrayList<Algorithm>();
                 for (String maxCutType : maxCutView.getListAlgorithm()) {
                     MaxCut maxCut = MaxCutWeightFactory.getInstance().getMaxCutInstance(maxCutType);
-                    maxCut.setGraph(graph);
+                    maxCut.setGraph(floatGraph);
                     maxCutList.add(maxCut);
                 }
                 return maxCutList;
@@ -117,9 +117,12 @@ public class MaxCutController extends AbstractController implements Initializing
             public void actionPerformed(ActionEvent e) {
                 int index = maxCutView.getFileList().getSelectedIndex();
                 if (index >= 0 && index < listModel.getSize()) {
-                    SimpleWeightGraph graph = Utils.getGraph(listModel.get(index));
-                    GraphVisualizer visualizer = new GraphVisualizer(graph);
-                    visualizer.setMaxCutMask(getMaxCutForGraph(graph).getResult());
+                    SimpleWeightFloatGraph floatGraph = Utils.getGraph(listModel.get(index));
+                    GraphVisualizer visualizer = new GraphVisualizer(floatGraph);
+                    MaxCut mc;
+                    if ((mc = getMaxCutForGraph(floatGraph)) != null) {
+                        visualizer.setMaxCutMask(mc.getResult());
+                    }
                     visualizer.start();
                 }
             }

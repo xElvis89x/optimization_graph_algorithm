@@ -1,6 +1,6 @@
-package com.elvis.graph.visualizer;
+package com.elvis.graph.visualizer.phisics;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import traer.animation.Smoother3D;
 import traer.physics.Particle;
 import traer.physics.ParticleSystem;
@@ -8,6 +8,7 @@ import traer.physics.Vector3D;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +28,10 @@ public class GraphVisualizer {
     public static final Dimension size = new Dimension(WIDTH, HEIGHT);
 
 
-    SimpleWeightGraph graph;
+    SimpleWeightFloatGraph floatGraph;
 
-    public GraphVisualizer(SimpleWeightGraph graph) {
-        this.graph = graph;
+    public GraphVisualizer(SimpleWeightFloatGraph floatGraph) {
+        this.floatGraph = floatGraph;
     }
 
     boolean[] maxCutMask;
@@ -48,6 +49,29 @@ public class GraphVisualizer {
 
     Map<Particle, Integer> particleIntegerMap = new HashMap<Particle, Integer>();
 
+    private static float EDGE_LENGTH = 5;
+    private static float EDGE_STRENGTH = 0.2f;
+    private int step = 0;
+    private Particle center;
+    private Random rand = new Random();
+    private java.util.List<Particle> listParticle = new ArrayList<Particle>();
+    public void addPointOnSurface() {
+        if (step < floatGraph.size()) {
+            Particle a = physics.makeParticle(10, rand.nextInt(100) - 50, rand.nextInt(100) - 50, 0);
+            particleIntegerMap.put(a, step);
+            for (int i = 0; i < step; i++) {
+                if (floatGraph.getCell(i, step) != 0) {
+                    physics.makeSpring(a, listParticle.get(i), EDGE_STRENGTH, EDGE_STRENGTH, EDGE_LENGTH * floatGraph.getCell(i, step));
+                }
+                //physics.makeAttraction(a, listParticle.get(i), -50, -1);
+                physics.makeAttraction(center, listParticle.get(i), -50, -1);
+
+            }
+            listParticle.add(a);
+            step++;
+        }
+    }
+
     public void start() {
         physics = new ParticleSystem(0, 0.25f);
         centroid = new Smoother3D(0.0f, 0.0f, 1.0f, 0.8f);
@@ -59,42 +83,31 @@ public class GraphVisualizer {
         VisualizerView v = new VisualizerView(physics, centroid);
         v.setMaxCutMask(maxCutMask);
         v.setParticleIntegerMap(particleIntegerMap);
+
+        v.getAddPoint().addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPointOnSurface();
+            }
+        });
         frame.setContentPane(v);
         frame.pack();
         frame.setVisible(true);
 
 
         new Thread(new Runnable() {
-
-            float EDGE_LENGTH = 5;
-            float EDGE_STRENGTH = 0.2f;
-
-            java.util.List<Particle> listParticle = new ArrayList<Particle>();
-            Random rand = new Random();
-
+            private long addTime = 3000;
             @Override
             public void run() {
-                int step = 0;
-                long time = 0;
-                Particle center = physics.makeParticle(100, 0, 0, 0);
+                step = 0;
+                center = physics.makeParticle(100, 0, 0, 0);
                 center.makeFixed();
-                while (true) {
-                    if (System.currentTimeMillis() - time > 1000) {
-                        time = System.currentTimeMillis();
-                        if (step < graph.size()) {
-                            Particle a = physics.makeParticle(10, rand.nextInt(100) - 50, rand.nextInt(100) - 50, 0);
-                            particleIntegerMap.put(a, step);
-                            for (int i = 0; i < step; i++) {
-                                if (graph.getCell(i, step) != 0) {
-                                    physics.makeSpring(a, listParticle.get(i), EDGE_STRENGTH, EDGE_STRENGTH, EDGE_LENGTH * graph.getCell(i, step));
-                                }
-                                //physics.makeAttraction(a, listParticle.get(i), -50, -1);
-                                physics.makeAttraction(center, listParticle.get(i), -50, -1);
 
-                            }
-                            listParticle.add(a);
-                            step++;
-                        }
+                long time = 0;
+                while (true) {
+                    if (System.currentTimeMillis() - time > addTime) {
+                        time = System.currentTimeMillis();
+                        addPointOnSurface();
                     }
 
                     Vector3D c = new Vector3D(0, 0, 0);

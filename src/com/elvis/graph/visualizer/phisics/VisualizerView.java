@@ -1,4 +1,4 @@
-package com.elvis.graph.visualizer;
+package com.elvis.graph.visualizer.phisics;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
@@ -32,6 +32,12 @@ public class VisualizerView extends JPanel {
     private JButton zoomOutButton;
     private JButton zoomInButton;
 
+    public JButton getAddPoint() {
+        return addPoint;
+    }
+
+    private JButton addPoint;
+
     ParticleSystem physics;
     Smoother3D centroid;
 
@@ -39,6 +45,7 @@ public class VisualizerView extends JPanel {
         this.physics = particleSystem;
         this.centroid = centroid;
         $$$setupUI$$$();
+
         zoomInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -77,13 +84,13 @@ public class VisualizerView extends JPanel {
      */
     private void $$$setupUI$$$() {
         createUIComponents();
-        contentPane.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        contentPane.setLayout(new GridLayoutManager(2, 4, new Insets(0, 0, 0, 0), -1, -1));
         zoomOutButton = new JButton();
         zoomOutButton.setBorderPainted(false);
         zoomOutButton.setContentAreaFilled(false);
-        zoomOutButton.setIcon(new ImageIcon(getClass().getResource("/com/elvis/graph/visualizer/zoomOut.png")));
+        zoomOutButton.setIcon(new ImageIcon(getClass().getResource("/com/elvis/graph/visualizer/phisics/zoomOut.png")));
         zoomOutButton.setText("");
-        contentPane.add(zoomOutButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        contentPane.add(zoomOutButton, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         contentPane.add(spacer1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
@@ -91,9 +98,12 @@ public class VisualizerView extends JPanel {
         zoomInButton = new JButton();
         zoomInButton.setBorderPainted(true);
         zoomInButton.setContentAreaFilled(false);
-        zoomInButton.setIcon(new ImageIcon(getClass().getResource("/com/elvis/graph/visualizer/zoomIn.png")));
+        zoomInButton.setIcon(new ImageIcon(getClass().getResource("/com/elvis/graph/visualizer/phisics/zoomIn.png")));
         zoomInButton.setText("");
-        contentPane.add(zoomInButton, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        contentPane.add(zoomInButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        addPoint = new JButton();
+        addPoint.setText("+");
+        contentPane.add(addPoint, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

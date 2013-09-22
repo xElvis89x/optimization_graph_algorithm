@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.tsp.weight;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import org.jgap.Configuration;
 import org.jgap.impl.DefaultConfiguration;
 
@@ -13,8 +13,8 @@ public class TSPWeightGeneticAlgorithm extends TSPWeightAbstract {
     final static int populationSize = 20;
     Configuration gaConf = new DefaultConfiguration();
 
-    protected TSPWeightGeneticAlgorithm(SimpleWeightGraph graph) {
-        super(graph);
+    protected TSPWeightGeneticAlgorithm(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
 
     }
 

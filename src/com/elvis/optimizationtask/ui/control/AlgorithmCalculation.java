@@ -1,7 +1,7 @@
 package com.elvis.optimizationtask.ui.control;
 
 import com.elvis.model.Graph;
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.Algorithm;
 import com.elvis.optimizationtask.ui.view.ProgressUIHolder;
 
@@ -62,18 +62,18 @@ public class AlgorithmCalculation implements Runnable {
     }
 
 
-    private void calculate(SimpleWeightGraph graph) {
+    private void calculate(SimpleWeightFloatGraph floatGraph) {
         int locStep = 0;
-        List<Algorithm> list = fireStartSolving(graph);
+        List<Algorithm> list = fireStartSolving(floatGraph);
         for (Algorithm algorithm : list) {
             progressUIHolder.getProgressText().setText("step: " + (step + 1) + ";  " + algorithm.getHumanID() + " start solve");
             algorithm.solve();
-            fireSolvedUse(graph, algorithm);
+            fireSolvedUse(floatGraph, algorithm);
             locStep++;
             progressUIHolder.getProgressBar().setValue((int) (100 * step * 1.0f / filesForCalc.length
                     + 100.0f / filesForCalc.length * locStep / list.size()));
         }
-        fireSolved(graph);
+        fireSolved(floatGraph);
     }
 
     List<Algorithm> fireStartSolving(Graph graph) {

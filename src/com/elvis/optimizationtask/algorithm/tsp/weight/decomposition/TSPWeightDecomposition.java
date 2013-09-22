@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.tsp.weight.decomposition;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCut;
 import com.elvis.optimizationtask.algorithm.tsp.TSP;
 import com.elvis.optimizationtask.algorithm.tsp.weight.TSPWeightAbstract;
@@ -18,8 +18,8 @@ public class TSPWeightDecomposition extends TSPWeightAbstract {
     private MaxCut decompositionAlgorithm;
     private TSP tsp;
 
-    public TSPWeightDecomposition(SimpleWeightGraph graph) {
-        super(graph);
+    public TSPWeightDecomposition(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
     }
 
     public void setDecompositionAlgorithm(MaxCut decompositionAlgorithm) {
@@ -59,8 +59,8 @@ public class TSPWeightDecomposition extends TSPWeightAbstract {
         return resultIndex;
     }
 
-    private SimpleWeightGraph getDecompositeGraph(List<Integer> graphDec) {
-        SimpleWeightGraph result = new SimpleWeightGraph();
+    private SimpleWeightFloatGraph getDecompositeGraph(List<Integer> graphDec) {
+        SimpleWeightFloatGraph result = new SimpleWeightFloatGraph();
         result.create(graphDec.size());
         for (int i = 0; i < result.size(); i++) {
             for (int j = 0; j < result.size(); j++) {

@@ -16,7 +16,7 @@ public class MaxCutWeightGlobalEquilibriumSearchWithTabu extends MaxCutWeightGlo
 
     @Override
     public String getHumanID() {
-        return super.getHumanID() + " With Tabu";
+        return super.getHumanID() + " + Tabu";
     }
 
     @Override

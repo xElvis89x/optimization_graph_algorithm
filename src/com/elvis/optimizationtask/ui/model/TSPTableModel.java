@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.ui.model;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.tsp.TSP;
 
 import java.awt.*;
@@ -86,7 +86,7 @@ public class TSPTableModel extends AbstractTableModel {
                 result = Arrays.toString(tspList.get(row).getResult());
                 break;
             case 4:
-                result = ((SimpleWeightGraph) tspList.get(row).getGraph()).getFile().getName();
+                result = ((SimpleWeightFloatGraph) tspList.get(row).getGraph()).getFile().getName();
 
         }
         return result;

@@ -1,6 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight.local;
 
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightAbstract;
 
 /**
@@ -13,8 +13,8 @@ import com.elvis.optimizationtask.algorithm.maxcut.weight.MaxCutWeightAbstract;
  * на каждом шаге пытаемся улучшить результат
  */
 public class MaxCutWeightGreedy extends MaxCutWeightAbstract {
-    public MaxCutWeightGreedy(SimpleWeightGraph graph) {
-        super(graph);
+    public MaxCutWeightGreedy(SimpleWeightFloatGraph floatGraph) {
+        super(floatGraph);
     }
 
     public MaxCutWeightGreedy() {

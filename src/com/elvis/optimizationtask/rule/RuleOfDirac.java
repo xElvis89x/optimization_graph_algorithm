@@ -1,7 +1,7 @@
 package com.elvis.optimizationtask.rule;
 
 import com.elvis.model.Graph;
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 
 /**
  * Created by User: el
@@ -13,7 +13,7 @@ public class RuleOfDirac implements Rule {
 
     @Override
     public boolean check(Graph graph) {
-        SimpleWeightGraph g = (SimpleWeightGraph) graph;
+        SimpleWeightFloatGraph g = (SimpleWeightFloatGraph) graph;
         for (int i = 1; i < g.size(); i++) {
             int count = 0;
             for (int j = i + 1; j < g.size(); j++) {

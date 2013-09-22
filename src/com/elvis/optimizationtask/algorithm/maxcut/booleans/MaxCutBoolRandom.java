@@ -1,7 +1,6 @@
 package com.elvis.optimizationtask.algorithm.maxcut.booleans;
 
 import com.elvis.model.SimpleBooleanGraph;
-import com.elvis.model.SimpleWeightGraph;
 
 import java.util.Random;
 

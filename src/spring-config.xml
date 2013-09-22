@@ -55,10 +55,11 @@
         <property name="JMenuBar" ref="menu"/>
     </bean>
 
-
     <!--menu part-->
     <bean id="menu" class="javax.swing.JMenuBar"/>
     <bean class="com.elvis.optimizationtask.ui.control.MenuController">
         <property name="menuBar" ref="menu"/>
     </bean>
+
+
 </beans>

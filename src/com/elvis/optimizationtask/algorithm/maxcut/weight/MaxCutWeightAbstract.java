@@ -1,7 +1,7 @@
 package com.elvis.optimizationtask.algorithm.maxcut.weight;
 
 import com.elvis.model.Graph;
-import com.elvis.model.SimpleWeightGraph;
+import com.elvis.model.SimpleWeightFloatGraph;
 import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
 
 /**
@@ -10,9 +10,9 @@ import com.elvis.optimizationtask.algorithm.maxcut.MaxCutAbstract;
  * Time: 15:16
  */
 public abstract class MaxCutWeightAbstract extends MaxCutAbstract {
-    protected SimpleWeightGraph graph;
+    protected SimpleWeightFloatGraph graph;
 
-    public MaxCutWeightAbstract(SimpleWeightGraph graph) {
+    public MaxCutWeightAbstract(SimpleWeightFloatGraph graph) {
         setGraph(graph);
     }
 
@@ -20,7 +20,7 @@ public abstract class MaxCutWeightAbstract extends MaxCutAbstract {
     }
 
     public void setGraph(Graph graph) {
-        this.graph = (SimpleWeightGraph) graph;
+        this.graph = (SimpleWeightFloatGraph) graph;
     }
 
     @Override

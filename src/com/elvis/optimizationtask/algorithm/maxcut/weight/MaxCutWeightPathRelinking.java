@@ -17,16 +17,17 @@ public class MaxCutWeightPathRelinking extends MaxCutWeightAbstract {
         int b = 10;
 
         List<boolean[]> refSet = new ArrayList<boolean[]>();
-        for (int i = 0; i < b; i++) {
-            if (!refSet.add(getRandomSolution(graph.size()))) {
-                i--;
+        for (int i = 0; i < b; ) {
+            boolean[] randomSolution = getRandomSolution(graph.size());
+            if (!refSet.contains(randomSolution)) {
+                refSet.add(randomSolution);
+                i++;
             }
         }
 
         boolean[] best = findBest(refSet);
         boolean[] worst = findWorst(refSet);
         float best_value = cutValue(best);
-
 
         List<Pair> pairSet = new ArrayList<Pair>();
         for (int i = 0; i < b; i++) {
@@ -47,8 +48,11 @@ public class MaxCutWeightPathRelinking extends MaxCutWeightAbstract {
                 j = tmp;
 
                 List<boolean[]> diffSet = pathRelinking(refSet.get(i), refSet.get(j));
+                if (diffSet.size() < 2) {
+                    continue;
+                }
 
-                boolean[] x_m = diffSet.get(rand.nextInt(diffSet.size()));
+                boolean[] x_m = diffSet.get(rand.nextInt(diffSet.size() - 1));
                 MaxCutWeightTabu tabu = new MaxCutWeightTabu(graph, 10, graph.size() / 2);
                 tabu.setMask_best(best);
                 tabu.setMask(x_m);
@@ -70,13 +74,11 @@ public class MaxCutWeightPathRelinking extends MaxCutWeightAbstract {
 
             pairSet.remove(pairSet.size() - 1);
         }
+
+        res_mask = best;
     }
 
     class Pair {
-
-        Pair() {
-
-        }
 
         Pair(int i, int j) {
             this.i = i;
@@ -115,27 +117,33 @@ public class MaxCutWeightPathRelinking extends MaxCutWeightAbstract {
 
 
     List<boolean[]> pathRelinking(boolean[] x_i, boolean x_j[]) {
-        List<boolean[]> set = diffSet(x_i, x_j);
+        List<boolean[]> x = new ArrayList<boolean[]>();
+
+        List<Integer> set = diffSet(x_i, x_j);
         int r = set.size() - 1;
         List<Integer> PV = new ArrayList<Integer>();
+
         float FI = 0;
-        for (int k = 1; k < r; k++) {
-            int t = rand.nextInt(x_i.length);
+        for (int k = 0; k < r; k++) {
+            Integer t = set.get(rand.nextInt(set.size()));
             PV.add(t);
-            FI = FI + 0;
-
-
+            x.add(Arrays.copyOf(x_i, x_i.length));
+            int v = x.size() - 1;
+            for (int i = 0; i < x_i.length; i++) {
+                x.get(v)[i] = PV.contains(i) ? x_j[i] : x_i[i];
+            }
+            //  FI = cutValue(x_i) - cutValue(x.get(x.size() - 1));
+            set.remove(t);
         }
-        return set;
+        return x;
     }
 
-    List<boolean[]> diffSet(boolean[] x_i, boolean[] x_j) {
-        List<boolean[]> result = new ArrayList<boolean[]>();
+
+    List<Integer> diffSet(boolean[] x_i, boolean[] x_j) {
+        List<Integer> result = new ArrayList<Integer>();
         for (int i = 0; i < x_i.length; i++) {
             if (x_i[i] != x_j[i]) {
-                x_i = Arrays.copyOf(x_i, x_i.length);
-                x_i[i] = !x_i[i];
-                result.add(x_i);
+                result.add(i);
             }
         }
         return result;
